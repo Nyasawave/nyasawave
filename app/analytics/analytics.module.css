@@ -1,0 +1,123 @@
+.bar {
+    width: 2rem;
+    background-color: rgb(52, 211, 153);
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.bar50 {
+    height: 50px;
+}
+
+.bar100 {
+    height: 100px;
+}
+
+.bar150 {
+    height: 150px;
+}
+
+.bar200 {
+    height: 200px;
+}
+
+.bar250 {
+    height: 250px;
+}
+
+.bar300 {
+    height: 300px;
+}
+
+.progressBar {
+    width: 100%;
+    background-color: rgb(39, 39, 42);
+    border-radius: 0.25rem;
+    height: 0.5rem;
+}
+
+.progress {
+    background-color: rgb(52, 211, 153);
+    height: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.progress5 {
+    width: 5%;
+}
+
+.progress10 {
+    width: 10%;
+}
+
+.progress15 {
+    width: 15%;
+}
+
+.progress20 {
+    width: 20%;
+}
+
+.progress25 {
+    width: 25%;
+}
+
+.progress30 {
+    width: 30%;
+}
+
+.progress35 {
+    width: 35%;
+}
+
+.progress40 {
+    width: 40%;
+}
+
+.progress45 {
+    width: 45%;
+}
+
+.progress50 {
+    width: 50%;
+}
+
+.progress55 {
+    width: 55%;
+}
+
+.progress60 {
+    width: 60%;
+}
+
+.progress65 {
+    width: 65%;
+}
+
+.progress70 {
+    width: 70%;
+}
+
+.progress75 {
+    width: 75%;
+}
+
+.progress80 {
+    width: 80%;
+}
+
+.progress85 {
+    width: 85%;
+}
+
+.progress90 {
+    width: 90%;
+}
+
+.progress95 {
+    width: 95%;
+}
+
+.progress100 {
+    width: 100%;
+}

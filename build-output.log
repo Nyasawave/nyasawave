@@ -1,0 +1,49 @@
+
+> nyasawave@0.1.0 build E:\nyasawave-projects\nyasawave
+> next build
+
+Ôû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+ÔÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+./app/subscribe/page.tsx:3:20
+Ecmascript file had an error
+  1 | import { useAuth } from "@/app/context/AuthContext";
+  2 | import Link from "next/link";
+> 3 | import { useState, useEffect, useCallback } from "react";
+    |                    ^^^^^^^^^
+  4 |
+  5 | interface Subscription {
+  6 |   tier: 'free' | 'premium';
+
+You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+./app/subscribe/page.tsx:3:10
+Ecmascript file had an error
+  1 | import { useAuth } from "@/app/context/AuthContext";
+  2 | import Link from "next/link";
+> 3 | import { useState, useEffect, useCallback } from "react";
+    |          ^^^^^^^^
+  4 |
+  5 | interface Subscription {
+  6 |   tier: 'free' | 'premium';
+
+You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+
+
+
+    at <unknown> (./app/subscribe/page.tsx:3:20)
+    at <unknown> (./app/subscribe/page.tsx:3:10)
+ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.

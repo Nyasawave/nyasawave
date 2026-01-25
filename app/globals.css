@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/* Default dark theme */
+:root {
+  --background: #111827;
+  --foreground: #ffffff;
+  --surface: #1f2937;
+  --border: #374151;
+  --text-secondary: #a1a5ab;
+}
+
+html.dark {
+  --background: #111827;
+  --foreground: #ffffff;
+  --surface: #1f2937;
+  --border: #374151;
+  --text-secondary: #a1a5ab;
+}
+
+html.light {
+  --background: #ffffff;
+  --foreground: #000000;
+  --surface: #f3f4f6;
+  --border: #d1d5db;
+  --text-secondary: #6b7280;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111827;
+    --foreground: #ffffff;
+    --surface: #1f2937;
+    --border: #374151;
+    --text-secondary: #a1a5ab;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Micro-interactions and animations */
+@layer components {
+  .card-anim {
+    @apply transition-transform duration-200 ease-out;
+    will-change: transform;
+  }
+
+  .card-anim:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+
+  .btn-cta {
+    @apply rounded-full px-6 py-3 font-semibold transition-colors duration-200;
+  }
+
+  .logo-anim {
+    @apply inline-block transition-transform duration-200 ease-out;
+  }
+
+  .logo-anim:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .fade-in {
+    animation: fadeIn 360ms cubic-bezier(.2, .9, .2, 1) both;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

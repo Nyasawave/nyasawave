@@ -1,0 +1,22 @@
+[
+    {
+        "id": "ad_001",
+        "artistId": "artist_1",
+        "title": "Summer Hits Promotion",
+        "description": "Promote my new summer album",
+        "budget": 500,
+        "spent": 125.50,
+        "startDate": "2026-01-15",
+        "endDate": "2026-02-15",
+        "targetGenre": "pop",
+        "targetAudience": "18-35",
+        "status": "active",
+        "clickCount": 245,
+        "impressionCount": 5000,
+        "createdAt": "2026-01-11",
+        "trackIds": [
+            "track_1",
+            "track_2"
+        ]
+    }
+]

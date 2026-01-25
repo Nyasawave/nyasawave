@@ -1,0 +1,102 @@
+.bar {
+    width: 100%;
+    background-color: rgb(39, 39, 42);
+    border-radius: 9999px;
+    height: 0.25rem;
+    overflow: hidden;
+}
+
+.fill {
+    background-color: rgb(52, 211, 153);
+    height: 100%;
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+}
+
+.fill0 {
+    width: 0%;
+}
+
+.fill1 {
+    width: 1%;
+}
+
+.fill5 {
+    width: 5%;
+}
+
+.fill10 {
+    width: 10%;
+}
+
+.fill15 {
+    width: 15%;
+}
+
+.fill20 {
+    width: 20%;
+}
+
+.fill25 {
+    width: 25%;
+}
+
+.fill30 {
+    width: 30%;
+}
+
+.fill35 {
+    width: 35%;
+}
+
+.fill40 {
+    width: 40%;
+}
+
+.fill45 {
+    width: 45%;
+}
+
+.fill50 {
+    width: 50%;
+}
+
+.fill55 {
+    width: 55%;
+}
+
+.fill60 {
+    width: 60%;
+}
+
+.fill65 {
+    width: 65%;
+}
+
+.fill70 {
+    width: 70%;
+}
+
+.fill75 {
+    width: 75%;
+}
+
+.fill80 {
+    width: 80%;
+}
+
+.fill85 {
+    width: 85%;
+}
+
+.fill90 {
+    width: 90%;
+}
+
+.fill95 {
+    width: 95%;
+}
+
+.fill100 {
+    width: 100%;
+}

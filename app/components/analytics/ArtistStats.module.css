@@ -1,0 +1,70 @@
+.bar {
+    flex: 1;
+    background-color: rgb(16, 185, 129);
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.bar38 {
+    height: 38%;
+}
+
+.bar45 {
+    height: 45%;
+}
+
+.bar48 {
+    height: 48%;
+}
+
+.bar52 {
+    height: 52%;
+}
+
+.bar55 {
+    height: 55%;
+}
+
+.bar61 {
+    height: 61%;
+}
+
+.bar72 {
+    height: 72%;
+}
+
+.progressBar {
+    width: 8rem;
+    background-color: rgb(63, 63, 70);
+    border-radius: 0.25rem;
+    height: 0.5rem;
+}
+
+.progressFill {
+    height: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.progressStreams {
+    background-color: rgb(16, 185, 129);
+}
+
+.progressStreams45 {
+    width: 45%;
+}
+
+.progressSubscriptions {
+    background-color: rgb(59, 130, 246);
+}
+
+.progressSubscriptions35 {
+    width: 35%;
+}
+
+.progressLicensing {
+    background-color: rgb(147, 51, 234);
+}
+
+.progressLicensing20 {
+    width: 20%;
+}

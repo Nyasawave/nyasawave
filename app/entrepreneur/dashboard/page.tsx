@@ -1,0 +1,139 @@
+'use client';
+
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import EntrepreneurNav from '@/app/components/navigation/EntrepreneurNav';
+import RoleContextSwitcher from '@/app/components/RoleContextSwitcher';
+
+interface EntrepreneurStats {
+    totalBusinesses: number;
+    totalRevenue: number;
+    activeAds: number;
+    monthlyGrowth: number;
+}
+
+export default function EntrepreneurDashboard() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+    const [stats, setStats] = useState<EntrepreneurStats | null>(null);
+
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            router.push('/auth/login');
+        } else if (status === 'authenticated') {
+            // Check if user has ENTREPRENEUR role
+            if (!(session?.user as any)?.roles?.includes('ENTREPRENEUR')) {
+                router.push('/');
+            } else {
+                fetchStats();
+            }
+        }
+    }, [status, session, router]);
+
+    const fetchStats = async () => {
+        try {
+            const response = await fetch('/api/entrepreneur/stats');
+            const data = await response.json();
+            setStats(data);
+        } catch (error) {
+            console.error('Error fetching entrepreneur stats:', error);
+        }
+    };
+
+    if (status === 'loading') {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-black">
+                <p className="text-white">Loading...</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-black">
+            {/* Header with Role Switcher */}
+            <header className="bg-zinc-900 border-b border-zinc-800 p-4 sticky top-0 z-50">
+                <div className="max-w-7xl mx-auto flex justify-between items-center">
+                    <h1 className="text-2xl font-bold text-white">Entrepreneur Dashboard</h1>
+                    <div className="flex gap-4 items-center">
+                        <RoleContextSwitcher />
+                        <button
+                            onClick={() => signOut()}
+                            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                        >
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div className="flex">
+                {/* Sidebar Navigation */}
+                <EntrepreneurNav />
+
+                {/* Main Content */}
+                <main className="flex-1 p-8">
+                    <div className="max-w-7xl">
+                        <h2 className="text-3xl font-bold text-white mb-8">Welcome back, {(session?.user as any)?.name || 'Entrepreneur'}!</h2>
+
+                        {/* Stats Grid */}
+                        {stats ? (
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                {/* Total Businesses Card */}
+                                <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+                                    <h3 className="text-zinc-400 text-sm font-medium">Total Businesses</h3>
+                                    <p className="text-3xl font-bold text-white mt-2">
+                                        {stats.totalBusinesses}
+                                    </p>
+                                </div>
+
+                                {/* Total Revenue Card */}
+                                <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+                                    <h3 className="text-zinc-400 text-sm font-medium">Total Revenue</h3>
+                                    <p className="text-3xl font-bold text-white mt-2">
+                                        ${stats.totalRevenue.toFixed(2)}
+                                    </p>
+                                </div>
+
+                                {/* Active Ads Card */}
+                                <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+                                    <h3 className="text-zinc-400 text-sm font-medium">Active Ads</h3>
+                                    <p className="text-3xl font-bold text-white mt-2">
+                                        {stats.activeAds}
+                                    </p>
+                                </div>
+
+                                {/* Monthly Growth Card */}
+                                <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+                                    <h3 className="text-zinc-400 text-sm font-medium">Monthly Growth</h3>
+                                    <p className="text-3xl font-bold text-white mt-2">
+                                        {stats.monthlyGrowth.toFixed(1)}%
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="text-center text-zinc-400">Loading stats...</div>
+                        )}
+
+                        {/* Your Businesses Section */}
+                        <div className="mt-8">
+                            <h3 className="text-2xl font-bold text-white mb-4">Your Businesses</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {[1, 2, 3].map((i) => (
+                                    <div key={i} className="bg-zinc-900 rounded-lg p-4 border border-zinc-800 hover:border-green-500 transition-colors cursor-pointer">
+                                        <h4 className="text-white font-semibold">Business {i}</h4>
+                                        <p className="text-zinc-400 text-sm mt-2">Revenue: ${1000 * i}</p>
+                                        <p className="text-zinc-400 text-sm">Status: <span className="text-green-500">Active</span></p>
+                                        <button className="mt-4 w-full bg-green-500 text-black px-4 py-2 rounded hover:bg-green-600 transition-colors">
+                                            Manage
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    );
+}

@@ -1,0 +1,406 @@
+.stepper {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Indicator */
+.progressContainer {
+    margin-bottom: 3rem;
+}
+
+.progressBar {
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+}
+
+.stepLabels {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stepLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #666;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.stepLabel.active {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.stepLabel.completed {
+    background: #4caf50;
+    color: white;
+}
+
+/* Step Container */
+.stepContainer {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stepHeader {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.stepHeader h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.5rem;
+}
+
+.stepHeader p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Role Selection */
+.rolesGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .rolesGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.roleCard {
+    padding: 1.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: inherit;
+}
+
+.roleCard:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateY(-4px);
+}
+
+.roleCard.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.roleIcon {
+    font-size: 36px;
+    display: block;
+}
+
+.roleCard h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+}
+
+.roleCard p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+/* Form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 480px) {
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.inputError {
+    border-color: #f44336 !important;
+    background: #ffebee;
+}
+
+.formGroup small {
+    font-size: 12px;
+    color: #999;
+}
+
+.fieldError {
+    font-size: 12px;
+    color: #f44336;
+    margin-top: -0.25rem;
+}
+
+.error {
+    padding: 0.75rem;
+    background: #ffebee;
+    border-left: 4px solid #f44336;
+    border-radius: 4px;
+    color: #c62828;
+    font-size: 13px;
+    margin-bottom: 1rem;
+}
+
+.checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checkboxGroup label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+}
+
+.checkboxGroup input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkboxGroup a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.checkboxGroup a:hover {
+    text-decoration: underline;
+}
+
+/* Payment Options */
+.paymentOptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 480px) {
+    .paymentOptions {
+        grid-template-columns: 1fr;
+    }
+}
+
+.paymentCard {
+    padding: 1.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.paymentCard:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateY(-4px);
+}
+
+.paymentIcon {
+    font-size: 32px;
+    display: block;
+}
+
+.paymentCard h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+}
+
+.paymentCard p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+/* Actions */
+.stepContent {
+    min-height: 400px;
+}
+
+.stepActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+@media (max-width: 480px) {
+    .stepActions {
+        flex-direction: column;
+    }
+}
+
+.continueBtn,
+.secondaryBtn,
+.tertiaryBtn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.continueBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    flex: 1;
+}
+
+.continueBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
+
+.continueBtn:active {
+    transform: translateY(0);
+}
+
+.secondaryBtn {
+    background: #f0f0f0;
+    color: #222;
+    flex: 1;
+}
+
+.secondaryBtn:hover {
+    background: #e0e0e0;
+}
+
+.tertiaryBtn {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    flex: 1;
+}
+
+.tertiaryBtn:hover {
+    background: #f8f9ff;
+}
+
+/* Loading State */
+.continueBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.continueBtn.loading {
+    pointer-events: none;
+}
+
+.continueBtn.loading::after {
+    content: "";
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 0.5rem;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

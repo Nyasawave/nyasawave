@@ -1,0 +1,345 @@
+[
+  {
+    "id": "user_1768811977196",
+    "name": "Admin",
+    "email": "trapkost2020@gmail.com",
+    "password": "$2b$10$aedp5BMPD89TsDPZTRJl2uuj2zuqPcB0h7B/9N/HHGHYrEwAoeLGK",
+    "roles": [
+      "ADMIN"
+    ],
+    "activePersona": "ADMIN",
+    "verified": true,
+    "premiumListener": true,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": true,
+      "type": "national_id",
+      "document": null,
+      "verifiedAt": "2026-01-19T08:39:37.196Z"
+    },
+    "payment": {
+      "provider": "stripe",
+      "customerId": "admin_001",
+      "verified": true
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": true,
+        "plan": "lifetime",
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-19T08:39:37.196Z",
+    "updatedAt": "2026-01-19T08:39:37.196Z"
+  },
+  {
+    "id": "user_1768812016661",
+    "name": "Test Artist",
+    "email": "artist@test.com",
+    "password": "$2b$10$.7O/efgZF1fTsvTbA6ZG6.jUQD.7Zsj9.rV30XOFqk5WgmvRriiVq",
+    "roles": [
+      "ARTIST",
+      "LISTENER"
+    ],
+    "activePersona": "ARTIST",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": true,
+      "type": "national_id",
+      "document": null,
+      "verifiedAt": "2026-01-19T08:40:16.661Z"
+    },
+    "payment": {
+      "provider": "stripe",
+      "customerId": "artist_001",
+      "verified": true
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-19T08:40:16.661Z",
+    "updatedAt": "2026-01-19T08:40:16.661Z"
+  },
+  {
+    "id": "user_1768813795658",
+    "name": "Tester User",
+    "email": "tester341206984@test.com",
+    "password": "$2b$10$GDVXntt6ec.fsF3gG1XR1uVY.H68jZf/vGmJ5dD1jazeYZ6do8SZq",
+    "roles": [
+      "LISTENER"
+    ],
+    "activePersona": "LISTENER",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": false,
+      "type": null,
+      "document": null,
+      "verifiedAt": null
+    },
+    "payment": {
+      "provider": null,
+      "customerId": null,
+      "verified": false
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-19T09:09:55.658Z",
+    "updatedAt": "2026-01-19T09:09:55.658Z"
+  },
+  {
+    "id": "user_1768816727982",
+    "name": "RegTest",
+    "email": "regtest_1662414890@test.com",
+    "password": "$2b$10$sl3J23MkT7WEovP134bdge7OJ7WMgcGQBD7njA1Kwxx8O/AzL2Os2",
+    "roles": [
+      "LISTENER"
+    ],
+    "activePersona": "LISTENER",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": false,
+      "type": null,
+      "document": null,
+      "verifiedAt": null
+    },
+    "payment": {
+      "provider": null,
+      "customerId": null,
+      "verified": false
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-19T09:58:47.982Z",
+    "updatedAt": "2026-01-19T09:58:47.982Z"
+  },
+  {
+    "id": "user_1768819416661",
+    "name": "Feature Test 974018956",
+    "email": "feature_1554498230@test.com",
+    "password": "$2b$10$tdhNWOF6j9vnNFcg8wa4yO4MGPHPxOeoVv3x1kCp8oG45lDKxQIom",
+    "roles": [
+      "LISTENER"
+    ],
+    "activePersona": "LISTENER",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": false,
+      "type": null,
+      "document": null,
+      "verifiedAt": null
+    },
+    "payment": {
+      "provider": null,
+      "customerId": null,
+      "verified": false
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-19T10:43:36.661Z",
+    "updatedAt": "2026-01-19T10:43:36.661Z"
+  },
+  {
+    "id": "user_1768819503747",
+    "name": "Test1968365601",
+    "email": "test1835735988@test.com",
+    "password": "$2b$10$achF5fr2wWWpTZj41fs5hetkzhzxbFsi5p5N3eKniecJbnPTsxN1.",
+    "roles": [
+      "LISTENER"
+    ],
+    "activePersona": "LISTENER",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": false,
+      "type": null,
+      "document": null,
+      "verifiedAt": null
+    },
+    "payment": {
+      "provider": null,
+      "customerId": null,
+      "verified": false
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-19T10:45:03.747Z",
+    "updatedAt": "2026-01-19T10:45:03.747Z"
+  },
+  {
+    "id": "user_test_marketer",
+    "name": "Test Marketer",
+    "email": "marketer@test.com",
+    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "roles": [
+      "MARKETER",
+      "LISTENER"
+    ],
+    "activePersona": "MARKETER",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": true,
+      "type": "national_id",
+      "document": null,
+      "verifiedAt": "2026-01-24T00:00:00.000Z"
+    },
+    "payment": {
+      "provider": "stripe",
+      "customerId": "marketer_test_001",
+      "verified": true
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-24T00:00:00.000Z",
+    "updatedAt": "2026-01-24T00:00:00.000Z"
+  },
+  {
+    "id": "user_test_entrepreneur",
+    "name": "Test Entrepreneur",
+    "email": "entrepreneur@test.com",
+    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "roles": [
+      "ENTREPRENEUR",
+      "LISTENER"
+    ],
+    "activePersona": "ENTREPRENEUR",
+    "verified": true,
+    "premiumListener": false,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": true,
+      "type": "national_id",
+      "document": null,
+      "verifiedAt": "2026-01-24T00:00:00.000Z"
+    },
+    "payment": {
+      "provider": "stripe",
+      "customerId": "entrepreneur_test_001",
+      "verified": true
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": false,
+        "plan": null,
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-24T00:00:00.000Z",
+    "updatedAt": "2026-01-24T00:00:00.000Z"
+  },
+  {
+    "id": "user_test_listener",
+    "name": "Test Listener",
+    "email": "listener@test.com",
+    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "roles": [
+      "LISTENER"
+    ],
+    "activePersona": "LISTENER",
+    "verified": true,
+    "premiumListener": true,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": false,
+      "type": null,
+      "document": null,
+      "verifiedAt": null
+    },
+    "payment": {
+      "provider": "stripe",
+      "customerId": "listener_test_001",
+      "verified": true
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": true,
+        "plan": "monthly",
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-24T00:00:00.000Z",
+    "updatedAt": "2026-01-24T00:00:00.000Z"
+  },
+  {
+    "id": "user_test_admin",
+    "name": "Test Admin User",
+    "email": "admin@test.com",
+    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "roles": [
+      "ADMIN"
+    ],
+    "activePersona": "ADMIN",
+    "verified": true,
+    "premiumListener": true,
+    "premiumExpiresAt": null,
+    "identity": {
+      "verified": true,
+      "type": "national_id",
+      "document": null,
+      "verifiedAt": "2026-01-24T00:00:00.000Z"
+    },
+    "payment": {
+      "provider": "stripe",
+      "customerId": "admin_test_001",
+      "verified": true
+    },
+    "subscriptions": {
+      "premiumListener": {
+        "active": true,
+        "plan": "lifetime",
+        "expiresAt": null
+      }
+    },
+    "onboarded": true,
+    "createdAt": "2026-01-24T00:00:00.000Z",
+    "updatedAt": "2026-01-24T00:00:00.000Z"
+  }
+]

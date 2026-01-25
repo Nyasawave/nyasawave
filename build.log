@@ -1,0 +1,55 @@
+
+> nyasawave@0.1.0 build E:\nyasawave-projects\nyasawave
+> next build
+
+Ôû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+ÔÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 3 errors:
+./app/api/escrow/[id]/release/route.ts:132:23
+Ecmascript file had an error
+  130 |  * Buyer or admin initiates a dispute for an escrow
+  131 |  */
+> 132 | export async function POST(
+      |                       ^^^^
+  133 |     req: NextRequest,
+  134 |     { params }: { params: Promise<{ id: string }> }
+  135 | ) {
+
+the name `POST` is defined multiple times
+
+
+./app/api/payments/webhook/route.ts:4:23
+Ecmascript file had an error
+  2 | import { PrismaClient } from '@prisma/client';
+  3 |
+> 4 | import { NextRequest, NextResponse } from 'next/server';
+    |                       ^^^^^^^^^^^^
+  5 | import { PrismaClient } from '@prisma/client';
+  6 |
+  7 | const prisma = new PrismaClient();
+
+the name `NextResponse` is defined multiple times
+
+
+./app/api/payments/webhook/route.ts:5:10
+Ecmascript file had an error
+  3 |
+  4 | import { NextRequest, NextResponse } from 'next/server';
+> 5 | import { PrismaClient } from '@prisma/client';
+    |          ^^^^^^^^^^^^
+  6 |
+  7 | const prisma = new PrismaClient();
+  8 |
+
+the name `PrismaClient` is defined multiple times
+
+
+    at <unknown> (./app/api/escrow/[id]/release/route.ts:132:23)
+    at <unknown> (./app/api/payments/webhook/route.ts:4:23)
+    at <unknown> (./app/api/payments/webhook/route.ts:5:10)
+ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.

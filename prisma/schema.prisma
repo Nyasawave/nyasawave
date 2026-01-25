@@ -1,0 +1,981 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  ARTIST
+  LISTENER
+  ENTREPRENEUR
+  MARKETER
+}
+
+enum PaymentType {
+  TRACK_BOOST
+  PREMIUM_ACCOUNT
+  MARKETPLACE_AD
+  FEATURED_ARTIST_SLOT
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// Core user model
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  roles     Role[]   @default([LISTENER]) // Array of roles for this user
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist    Artist?
+  listener  Listener?
+  entrepreneur Entrepreneur?
+  marketer  Marketer?
+  
+  payments  Payment[]
+  boosts    TrackBoost[]
+  ads       MarketplaceAd[]
+  auditLogs AuditLog[]
+  
+  // KYC & Verification
+  kyc       KYCSubmission?
+  
+  // Orders & Reviews (Note: products are managed by Artist)
+  orders    Order[]
+  reviews   Review[]
+  
+  // Social
+  following Follow[]    @relation("Following")
+  followers Follow[]    @relation("Followers")
+  likes     Like[]
+  comments  Comment[]
+  
+  // Messaging
+  sentMessages     Message[]   @relation("SentMessages")
+  receivedMessages Message[]   @relation("ReceivedMessages")
+  
+  // New relations for Phase 7-11
+  subscription     Subscription?
+  playHistory      PlayHistory[]
+  playlists        Playlist[]
+  downloads        Download[]
+  
+  // Notifications
+  notifications    Notification[]
+  
+  // Voting & tournaments
+  votes            Vote[]
+  
+  // Wallet & transactions
+  wallet           Wallet?
+  transactions     Transaction[]
+  payouts          Payout[]
+  
+  // Theme preferences
+  themePreference  ThemePreference?
+
+  @@index([email])
+  @@index([verified])
+}
+
+// Artist profile model
+model Artist {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  stageName      String
+  bio            String?
+  profileImage   String?
+  verified       Boolean  @default(false)
+  earnings       Float    @default(0)
+  totalEarnings  Float    @default(0)
+  totalWithdrawn Float    @default(0)
+  country        String   @default("Malawi")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tracks      Track[]
+  boosts      TrackBoost[]
+  withdrawals Withdrawal[]
+  products    Product[]
+  tournaments TournamentParticipant[]
+
+  @@index([userId])
+  @@index([verified])
+}
+
+// Listener profile
+model Listener {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  favoriteGenres  String[] @default([]) // Array of preferred genres
+  listeningTime   Int      @default(0)  // Total listening time in minutes
+  likeCount       Int      @default(0)
+  playlistCount   Int      @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+// Entrepreneur profile
+model Entrepreneur {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  businessName    String
+  businessType    String   // "merchandise", "services", "beats", "collaborations"
+  websiteUrl      String?
+  businessImage   String?
+  
+  verified        Boolean  @default(false)
+  rating          Float    @default(0) // Average rating from customers
+  totalSales      Float    @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([verified])
+}
+
+// Marketer profile
+model Marketer {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  companyName     String?
+  specialties     String[] @default([]) // ["social_media", "influencer", "pr", "content_creation"]
+  bio             String?
+  
+  campaignsCreated Int   @default(0)
+  totalReach       Int   @default(0)
+  successRate      Float @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+
+// Track/Song model
+model Track {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  audioUrl    String
+  coverArt    String?
+  duration    Int
+  genre       String
+  plays       Int      @default(0)
+  likes       Int      @default(0)
+  isBoosted   Boolean  @default(false)
+  isReleased  Boolean  @default(true)
+  artistId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  artist         Artist         @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  boosts         TrackBoost[]
+  likeRecords    Like[]
+  comments       Comment[]
+  playHistory    PlayHistory[]
+  playlists      PlaylistTrack[]
+  submissions    TournamentSubmission[]
+  downloads      Download[]
+
+  @@index([artistId])
+  @@index([isBoosted])
+  @@index([isReleased])
+}
+
+// Track boost model (paid promotion)
+model TrackBoost {
+  id           String        @id @default(cuid())
+  trackId      String
+  artistId     String
+  userId       String
+  tier         String // "free", "premium", "global", "sponsor"
+  price        Float
+  currency     String        @default("MWK")
+  status       PaymentStatus @default(PENDING)
+  startDate    DateTime
+  endDate      DateTime
+  impressions  Int           @default(0)
+  clicks       Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  track   Track   @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  artist  Artist  @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment?
+
+  @@index([trackId])
+  @@index([artistId])
+  @@index([status])
+}
+
+// Marketplace ads model
+model MarketplaceAd {
+  id           String        @id @default(cuid())
+  userId       String
+  placement    String // "discover_featured", "homepage_banner", "artist_page", "city_promotion", "trending_chart"
+  location     String? // "blantyre", "lilongwe", "mzuzu", "national"
+  title        String
+  description  String?
+  imageUrl     String
+  targetUrl    String?
+  budget       Float
+  currency     String        @default("MWK")
+  startDate    DateTime
+  endDate      DateTime
+  status       PaymentStatus @default(PENDING)
+  impressions  Int           @default(0)
+  clicks       Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment?
+
+  @@index([userId])
+  @@index([placement])
+  @@index([status])
+}
+
+// Payment transactions model
+model Payment {
+  id               String        @id @default(cuid())
+  userId           String
+  type             PaymentType
+  amount           Float
+  currency         String        @default("MWK")
+  status           PaymentStatus @default(PENDING)
+  provider         String? // "stripe", "flutterwave", "airtel_money", "tnm_mpamba"
+  transactionId    String?
+  reference        String?
+  description      String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trackBoost TrackBoost?     @relation(fields: [trackBoostId], references: [id], onDelete: SetNull)
+  trackBoostId String?       @unique
+  ad         MarketplaceAd?  @relation(fields: [adId], references: [id], onDelete: SetNull)
+  adId       String?         @unique
+
+  @@index([userId])
+  @@index([status])
+  @@index([provider])
+  @@index([createdAt])
+}
+
+// Artist withdrawal model
+model Withdrawal {
+  id           String        @id @default(cuid())
+  artistId     String
+  amount       Float
+  currency     String        @default("MWK")
+  status       PaymentStatus @default(PENDING)
+  method       String // "airtel_money", "tnm_mpamba", "bank_transfer"
+  reference    String?
+  processedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId])
+  @@index([status])
+  @@index([createdAt])
+}
+// Admin audit log model
+model AuditLog {
+  id        String   @id @default(cuid())
+  adminId   String
+  action    String   // "verify_artist", "ban_user", "update_role", "remove_track"
+  target    String   // user/artist/track ID
+  targetType String  // "user", "artist", "track"
+  details   Json?    // Additional context
+  createdAt DateTime @default(now())
+
+  admin User @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([action])
+  @@index([targetType])
+  @@index([createdAt])
+}
+
+// KYC / Verification model
+model KYCSubmission {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Personal info
+  fullName        String
+  dateOfBirth     DateTime
+  nationality     String
+  address         String
+  city            String
+  country         String
+  
+  // Documents
+  idType          String   // "passport", "national_id", "driver_license"
+  idNumber        String
+  idFrontUrl      String?
+  idBackUrl       String?
+  idVerified      Boolean  @default(false)
+  
+  // Contact
+  phone           String
+  phoneVerified   Boolean  @default(false)
+  
+  // Status
+  status          String   @default("pending")  // "pending", "approved", "rejected"
+  rejectionReason String?
+  reviewedAt      DateTime?
+  reviewedBy      String?  // Admin ID
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+}
+
+// Marketplace Products
+model Product {
+  id          String   @id @default(cuid())
+  artistId    String
+  artist      Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  
+  name        String
+  description String?
+  type        String   // "beat", "exclusive", "merchandise", "service"
+  price       Float
+  currency    String   @default("MWK")
+  imageUrl    String?
+  fileUrl     String?
+  
+  inventory   Int      @default(1)
+  sold        Int      @default(0)
+  
+  status      String   @default("active")  // "draft", "active", "inactive"
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  orders      OrderItem[]
+  reviews     Review[]
+  
+  @@index([artistId])
+  @@index([status])
+  @@index([type])
+}
+
+// Orders
+model Order {
+  id           String   @id @default(cuid())
+  buyerId      String
+  buyer        User     @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  
+  items        OrderItem[]
+  total        Float
+  currency     String   @default("MWK")
+  
+  status       String   @default("pending")  // "pending", "paid", "shipped", "delivered", "canceled"
+  
+  paymentId    String?
+  paymentStatus String?
+  
+  shippingAddress String?
+  trackingNumber  String?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  dispute      Dispute?
+  messages     Message[]
+  
+  @@index([buyerId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Order Items
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  quantity  Int
+  price     Float
+  
+  @@index([orderId])
+  @@index([productId])
+}
+
+// Disputes
+model Dispute {
+  id           String   @id @default(cuid())
+  orderId      String   @unique
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  raisedBy     String   // User ID
+  description  String
+  
+  status       String   @default("open")  // "open", "investigating", "resolved", "closed"
+  resolution   String?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  resolvedAt   DateTime?
+  resolvedBy   String?  // Admin ID
+  
+  @@index([status])
+}
+
+// Reviews/Ratings
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  buyerId   String
+  buyer     User     @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  
+  rating    Int      // 1-5
+  comment   String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([productId])
+  @@index([buyerId])
+  @@unique([productId, buyerId])
+}
+
+// Social: Follow
+model Follow {
+  id         String   @id @default(cuid())
+  followerId String
+  follower   User     @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  
+  followeeId String
+  followee   User     @relation("Followers", fields: [followeeId], references: [id], onDelete: Cascade)
+  
+  createdAt  DateTime @default(now())
+  
+  @@unique([followerId, followeeId])
+  @@index([followerId])
+  @@index([followeeId])
+}
+
+// Social: Like
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  trackId   String
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, trackId])
+  @@index([trackId])
+  @@index([userId])
+}
+
+// Social: Comment
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  trackId   String
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  content   String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([trackId])
+  @@index([userId])
+}
+
+// Messaging
+model Message {
+  id         String   @id @default(cuid())
+  orderId    String?
+  order      Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  
+  recipientId String
+  recipient  User     @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  
+  content    String
+  
+  createdAt  DateTime @default(now())
+  
+  @@index([orderId])
+  @@index([senderId])
+  @@index([recipientId])
+}
+
+// Email Verification
+model EmailVerification {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+  @@index([token])
+}
+
+// Password Reset
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+  @@index([token])
+}
+
+// PHASE 7: SUBSCRIPTION MODEL
+model Subscription {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Subscription details
+  tier            String   // "free", "premium", "artist", "entrepreneur", "marketer"
+  status          String   @default("active")  // "active", "canceled", "expired", "pending"
+  
+  // Stripe integration
+  stripeCustomerId    String?
+  stripeSubscriptionId String?
+  stripePriceId       String?
+  
+  // Billing
+  currentPeriodStart  DateTime?
+  currentPeriodEnd    DateTime?
+  cancelAtPeriodEnd   Boolean @default(false)
+  
+  // Features
+  maxTracks           Int?  // Max uploads per month for artists
+  maxPlaylists        Int?
+  maxProducts         Int?  // For entrepreneurs
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([tier])
+  @@index([status])
+}
+
+// PHASE 8: TOURNAMENT MODEL
+model Tournament {
+  id              String   @id @default(cuid())
+  creatorId       String   // Admin ID
+  
+  title           String
+  description     String?
+  rules           String?
+  
+  // Tournament details
+  status          String   @default("draft")  // "draft", "active", "closed", "completed"
+  genre           String?  // Optional: music genre
+  region          String?  // Optional: geographic region
+  
+  // Dates
+  startDate       DateTime
+  endDate         DateTime
+  submissionDeadline DateTime
+  
+  // Prizes
+  prizePool       Float    @default(0)
+  currency        String   @default("MWK")
+  
+  // Participation
+  maxParticipants Int?
+  entryFee        Float    @default(0)
+  
+  // Ranking criteria
+  rankingBy       String   @default("plays,likes,downloads")  // Comma-separated: plays, likes, downloads, comments
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  completedAt     DateTime?
+  
+  participants    TournamentParticipant[]
+  submissions     TournamentSubmission[]
+  prizes          TournamentPrize[]
+  votes           Vote[]
+  
+  @@index([creatorId])
+  @@index([status])
+  @@index([startDate])
+}
+
+// PHASE 8: TOURNAMENT PARTICIPANT
+model TournamentParticipant {
+  id              String   @id @default(cuid())
+  tournamentId    String
+  tournament      Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  
+  artistId        String
+  artist          Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  
+  status          String   @default("active")  // "active", "disqualified", "withdrew"
+  entryPaid       Boolean  @default(false)
+  paymentId       String?
+  
+  // Current rank (updated as tournament progresses)
+  currentRank     Int?
+  score           Float    @default(0)  // Weighted score based on ranking criteria
+  
+  joinedAt        DateTime @default(now())
+  
+  submissions     TournamentSubmission[]
+  votes           Vote[]
+  
+  @@unique([tournamentId, artistId])
+  @@index([tournamentId])
+  @@index([artistId])
+  @@index([currentRank])
+}
+
+// PHASE 8: TOURNAMENT SUBMISSION
+model TournamentSubmission {
+  id              String   @id @default(cuid())
+  tournamentId    String
+  tournament      Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  
+  participantId   String
+  participant     TournamentParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  
+  trackId         String
+  track           Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  status          String   @default("submitted")  // "submitted", "accepted", "rejected"
+  rejectionReason String?
+  
+  // Stats at submission time
+  playsAtSubmission       Int @default(0)
+  likesAtSubmission       Int @default(0)
+  downloadsAtSubmission   Int @default(0)
+  
+  submittedAt     DateTime @default(now())
+  
+  @@unique([participantId, trackId])
+  @@index([tournamentId])
+  @@index([participantId])
+  @@index([trackId])
+}
+
+// PHASE 8: TOURNAMENT PRIZES
+model TournamentPrize {
+  id              String   @id @default(cuid())
+  tournamentId    String
+  tournament      Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  
+  placement       Int      // 1st, 2nd, 3rd, etc.
+  amount          Float
+  currency        String   @default("MWK")
+  
+  awardedTo       String?  // Winner artist ID
+  awardedAt       DateTime?
+  
+  createdAt       DateTime @default(now())
+  
+  @@index([tournamentId])
+  @@index([placement])
+}
+
+// PHASE 9: ESCROW MODEL (for marketplace transactions)
+model Escrow {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  
+  buyerId         String
+  sellerId        String
+  
+  amount          Float
+  currency        String   @default("MWK")
+  
+  status          String   @default("pending")  // "pending", "held", "released", "refunded", "disputed"
+  
+  releaseDate     DateTime?
+  releasedAt      DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([orderId])
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([status])
+}
+
+// PHASE 10: PLAY HISTORY MODEL
+model PlayHistory {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  trackId         String
+  track           Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  playedAt        DateTime @default(now())
+  duration        Int?     // Seconds played (if partial)
+  
+  @@index([userId])
+  @@index([trackId])
+  @@index([playedAt])
+}
+
+// PHASE 10: PLAYLIST MODEL
+model Playlist {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title           String
+  description     String?
+  coverImage      String?
+  isPublic        Boolean  @default(true)
+  
+  tracks          PlaylistTrack[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([isPublic])
+}
+
+// Playlist tracks junction table
+model PlaylistTrack {
+  id              String   @id @default(cuid())
+  playlistId      String
+  playlist        Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  
+  trackId         String
+  track           Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  addedAt         DateTime @default(now())
+  
+  @@unique([playlistId, trackId])
+  @@index([playlistId])
+  @@index([trackId])
+}
+
+// NOTIFICATIONS
+model Notification {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type            String   // "tournament", "payment", "order", "message", "follow", "like", "comment"
+  title           String
+  message         String
+  relatedId       String?  // ID of related resource (tournament, payment, order, etc)
+  
+  read            Boolean  @default(false)
+  readAt          DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
+
+// WALLET & TRANSACTIONS
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TOURNAMENT_PRIZE
+  MARKETPLACE_SALE
+  MARKETPLACE_PURCHASE
+  TRACK_BOOST
+  SUBSCRIPTION
+  REFUND
+  ESCROW_HOLD
+  ESCROW_RELEASE
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELED
+}
+
+model Wallet {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  balance         Float    @default(0)
+  currency        String   @default("MWK")
+  
+  totalEarned     Float    @default(0)
+  totalSpent      Float    @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type            TransactionType
+  status          TransactionStatus @default(PENDING)
+  
+  amount          Float
+  currency        String   @default("MWK")
+  description     String?
+  
+  relatedId       String?  // Order, tournament, payment ID
+  relatedType     String?  // "order", "tournament", "subscription"
+  
+  paymentMethod   String?  // "stripe", "airtel_money", "tnm_mpamba", "bank_transfer"
+  transactionRef  String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  completedAt     DateTime?
+  
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Payout {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount          Float
+  currency        String   @default("MWK")
+  
+  status          TransactionStatus @default(PENDING)
+  method          String   // "bank_transfer", "airtel_money", "tnm_mpamba"
+  bankAccount     String?
+  accountHolder   String?
+  
+  reference       String?
+  processedAt     DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// TOURNAMENT VOTING
+model Vote {
+  id              String   @id @default(cuid())
+  tournamentId    String
+  tournament      Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  
+  voterId         String
+  voter           User     @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  
+  participantId   String
+  participant     TournamentParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  
+  // Anti-fraud
+  ipAddress       String?
+  deviceHash      String?
+  
+  votedAt         DateTime @default(now())
+  
+  @@unique([tournamentId, voterId, participantId])
+  @@index([tournamentId])
+  @@index([voterId])
+  @@index([participantId])
+}
+
+// PHASE 11: DOWNLOAD TRACKING
+model Download {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  trackId         String
+  track           Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  isPremium       Boolean  @default(false)
+  downloadedAt    DateTime @default(now())
+  expiresAt       DateTime?  // For temporary licenses
+  
+  @@index([userId])
+  @@index([trackId])
+  @@index([isPremium])
+}
+
+// PHASE 1: THEME PREFERENCES
+model ThemePreference {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  theme           String   @default("dark") // dark, light, custom
+  customColors    Json?    // For custom themes
+  accentColor     String   @default("blue") // primary accent color
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+}

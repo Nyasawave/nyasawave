@@ -1,0 +1,22 @@
+[
+    {
+        "id": "revenue_001",
+        "artistId": "artist_1",
+        "source": "stream",
+        "amount": 0.005,
+        "currency": "USD",
+        "trackId": "track_1",
+        "timestamp": "2026-01-10T10:00:00Z",
+        "details": "0.005 per stream"
+    },
+    {
+        "id": "revenue_002",
+        "artistId": "artist_1",
+        "source": "ad_click",
+        "amount": 0.25,
+        "currency": "USD",
+        "adId": "ad_001",
+        "timestamp": "2026-01-09T15:30:00Z",
+        "details": "Premium user clicked ad"
+    }
+]

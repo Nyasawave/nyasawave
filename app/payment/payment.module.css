@@ -1,0 +1,91 @@
+.paymentMethodLabel {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.paymentMethodLabelActive {
+  border-color: rgb(16, 185, 129);
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.paymentMethodLabelInactive {
+  border-color: rgb(63, 63, 70);
+  background-color: rgb(31, 41, 55);
+}
+
+.progressBar {
+  width: 100%;
+  background-color: rgb(39, 39, 42);
+  border-radius: 0.25rem;
+  height: 0.5rem;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  background-color: rgb(16, 185, 129);
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+}
+
+.checkoutCard {
+  background-color: rgb(24, 24, 27);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  border: 1px solid rgb(39, 39, 42);
+}
+
+.orderSummary {
+  background: linear-gradient(to bottom right, rgba(5, 150, 105, 0.2), rgb(24, 24, 27));
+  border-radius: 0.5rem;
+  padding: 2rem;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  position: sticky;
+  top: 8rem;
+  height: fit-content;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.summaryLabel {
+  color: rgb(113, 113, 122);
+}
+
+.summaryValue {
+  font-weight: 600;
+}
+
+.totalAmount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(16, 185, 129);
+}
+
+.submitButton {
+  width: 100%;
+  background-color: rgb(16, 185, 129);
+  color: rgb(0, 0, 0);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: rgb(5, 150, 105);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
