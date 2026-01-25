@@ -26,8 +26,8 @@ export default function AccountSettingsPage() {
         setFormData({
             name: session.user.name || '',
             email: session.user.email || '',
-            username: session.user.username || '',
-            bio: session.user.bio || '',
+            username: (session.user as any)?.username || '',
+            bio: (session.user as any)?.bio || '',
         });
         setLoading(false);
     }, [session, router]);

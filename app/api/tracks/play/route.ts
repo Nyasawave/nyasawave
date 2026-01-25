@@ -182,13 +182,11 @@ export async function POST(req: NextRequest) {
  * POST /api/tracks/{id}/like
  * Like/unlike track
  */
-export async function PATCH(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(req: NextRequest) {
     try {
-        const { id: trackId } = await params;
         const url = new URL(req.url);
+        const pathParts = url.pathname.split("/");
+        const trackId = pathParts[pathParts.length - 2];
         const action = url.pathname.split("/").pop();
 
         if (action === "like") {
