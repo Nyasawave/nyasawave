@@ -3,15 +3,16 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function ArtistTracksPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [tracks, setTracks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (session && !session.user.roles?.includes('ARTIST')) {
+        if (session && !(session.user as any)?.roles?.includes('ARTIST')) {
             router.push('/unauthorized');
         }
     }, [session, router]);
@@ -19,10 +20,10 @@ export default function ArtistTracksPage() {
     useEffect(() => {
         const fetchTracks = async () => {
             try {
-                const response = await fetch("/api/tracks");
+                const response = await fetch(`/api/artist/tracks?artistId=${(session?.user as any)?.id}`);
                 if (response.ok) {
                     const data = await response.json();
-                    setTracks(data.tracks || []);
+                    setTracks(Array.isArray(data) ? data : []);
                 }
             } catch (error) {
                 console.error("Failed to fetch tracks:", error);
@@ -31,7 +32,7 @@ export default function ArtistTracksPage() {
             }
         };
 
-        if (session?.user?.roles?.includes('ARTIST')) {
+        if ((session?.user as any)?.roles?.includes('ARTIST')) {
             fetchTracks();
         }
     }, [session]);

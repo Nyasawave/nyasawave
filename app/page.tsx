@@ -100,6 +100,40 @@ export default function Home() {
         <RecommendedTracks />
       </section>
 
+      {/* ACTIVE TOURNAMENT SECTION */}
+      <section className="mt-32 px-6 max-w-6xl mx-auto pb-12">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold">🏆 Active Tournaments</h2>
+          <Link href="/tournaments" className="text-emerald-400 hover:text-emerald-300 text-sm">
+            View All →
+          </Link>
+        </div>
+        <div className="bg-gradient-to-r from-emerald-600/20 to-blue-600/20 border border-emerald-600/30 rounded-xl p-8">
+          <h3 className="text-2xl font-bold text-white mb-2">Battle of the Beat</h3>
+          <p className="text-zinc-300 mb-4">Top producers and artists competing for the 100,000 MWK prize pool</p>
+          <div className="flex gap-4 mb-6">
+            <div className="flex flex-col">
+              <span className="text-zinc-400 text-sm">Participants</span>
+              <span className="text-2xl font-bold text-emerald-400">47</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-zinc-400 text-sm">Prize Pool</span>
+              <span className="text-2xl font-bold text-emerald-400">100K MWK</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-zinc-400 text-sm">Days Remaining</span>
+              <span className="text-2xl font-bold text-emerald-400">12</span>
+            </div>
+          </div>
+          <Link
+            href="/tournaments/1"
+            className="inline-block px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition"
+          >
+            View Tournament & Vote →
+          </Link>
+        </div>
+      </section>
+
       {/* ARTIST x BUSINESS SECTION */}
       <section className="mt-32 px-6 max-w-6xl mx-auto pb-32">
         <h2 className="text-3xl font-bold mb-8">For Business & Brands</h2>

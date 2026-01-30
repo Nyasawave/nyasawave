@@ -9,7 +9,6 @@ import Player from "./components/Player";
 import Footer from "./components/Footer";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { PlayerProvider } from "./context/PlayerContext";
-import { AuthProvider } from "./context/AuthContext";
 import PremiumToggle from "./components/PremiumToggle";
 import UpgradeBanner from "./components/UpgradeBanner";
 import { AudioPlayerProvider } from "./context/AudioPlayerContext";
@@ -30,29 +29,27 @@ export default function RootLayout({
           <ThemeProvider>
             <RoleProvider>
               <ErrorBoundary>
-                <AuthProvider>
-                  <AudioPlayerProvider>
-                    <ArtistProvider>
-                      <SongProvider>
-                        <PlaylistProvider>
-                          <PlayerProvider>
-                            <FollowProvider>
-                              <SubscriptionProvider>
-                                <PremiumToggle />
-                                <UpgradeBanner />
-                                <RoleAwareHeader />
-                                {children}
-                                <Footer />
-                                <Player />
-                                <AudioPlayerBar />
-                              </SubscriptionProvider>
-                            </FollowProvider>
-                          </PlayerProvider>
-                        </PlaylistProvider>
-                      </SongProvider>
-                    </ArtistProvider>
-                  </AudioPlayerProvider>
-                </AuthProvider>
+                <AudioPlayerProvider>
+                  <ArtistProvider>
+                    <SongProvider>
+                      <PlaylistProvider>
+                        <PlayerProvider>
+                          <FollowProvider>
+                            <SubscriptionProvider>
+                              <PremiumToggle />
+                              <UpgradeBanner />
+                              <RoleAwareHeader />
+                              {children}
+                              <Footer />
+                              <Player />
+                              <AudioPlayerBar />
+                            </SubscriptionProvider>
+                          </FollowProvider>
+                        </PlayerProvider>
+                      </PlaylistProvider>
+                    </SongProvider>
+                  </ArtistProvider>
+                </AudioPlayerProvider>
               </ErrorBoundary>
             </RoleProvider>
           </ThemeProvider>

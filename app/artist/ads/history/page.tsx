@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '../../../context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { MOCK_ACTIVE_ADS, MOCK_EXPIRED_ADS } from '../../../../lib/mockAds';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function AdHistory() {
-    const { user } = useAuth();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
+    const user = session?.user;
     const [activeTab, setActiveTab] = useState<'active' | 'expired'>('active');
 
     if (!user || !user.roles?.includes('ARTIST')) {

@@ -3,7 +3,7 @@
     "id": "user_1768811977196",
     "name": "Admin",
     "email": "trapkost2020@gmail.com",
-    "password": "$2b$10$aedp5BMPD89TsDPZTRJl2uuj2zuqPcB0h7B/9N/HHGHYrEwAoeLGK",
+    "password": "$2b$10$/ZqGXaWJ2/aX8L8./Uz9suB7rNA36bQPDIPYjE3SD3MVE3zp3tRQa",
     "roles": [
       "ADMIN"
     ],
@@ -37,7 +37,7 @@
     "id": "user_1768812016661",
     "name": "Test Artist",
     "email": "artist@test.com",
-    "password": "$2b$10$.7O/efgZF1fTsvTbA6ZG6.jUQD.7Zsj9.rV30XOFqk5WgmvRriiVq",
+    "password": "$2b$10$/ZqGXaWJ2/aX8L8./Uz9suB7rNA36bQPDIPYjE3SD3MVE3zp3tRQa",
     "roles": [
       "ARTIST",
       "LISTENER"
@@ -208,7 +208,7 @@
     "id": "user_test_marketer",
     "name": "Test Marketer",
     "email": "marketer@test.com",
-    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "password": "$2b$10$/ZqGXaWJ2/aX8L8./Uz9suB7rNA36bQPDIPYjE3SD3MVE3zp3tRQa",
     "roles": [
       "MARKETER",
       "LISTENER"
@@ -243,7 +243,7 @@
     "id": "user_test_entrepreneur",
     "name": "Test Entrepreneur",
     "email": "entrepreneur@test.com",
-    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "password": "$2b$10$/ZqGXaWJ2/aX8L8./Uz9suB7rNA36bQPDIPYjE3SD3MVE3zp3tRQa",
     "roles": [
       "ENTREPRENEUR",
       "LISTENER"
@@ -278,7 +278,7 @@
     "id": "user_test_listener",
     "name": "Test Listener",
     "email": "listener@test.com",
-    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "password": "$2b$10$/ZqGXaWJ2/aX8L8./Uz9suB7rNA36bQPDIPYjE3SD3MVE3zp3tRQa",
     "roles": [
       "LISTENER"
     ],
@@ -312,7 +312,7 @@
     "id": "user_test_admin",
     "name": "Test Admin User",
     "email": "admin@test.com",
-    "password": "$2b$10$qsHG8I7X.pZdP7I5KJ.oreJK8VCvC5B0q0mLs0wM7Jq.Y5G5P6Gpa",
+    "password": "$2b$10$/ZqGXaWJ2/aX8L8./Uz9suB7rNA36bQPDIPYjE3SD3MVE3zp3tRQa",
     "roles": [
       "ADMIN"
     ],

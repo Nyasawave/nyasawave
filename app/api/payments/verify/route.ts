@@ -25,6 +25,7 @@ interface User {
         provider: string;
         customerId: string;
         verified: boolean;
+        stripeSubscriptionId?: string;
     };
     subscriptions: {
         premiumListener: {

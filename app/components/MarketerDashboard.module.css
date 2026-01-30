@@ -280,6 +280,18 @@
     color: #1db954;
 }
 
+.budgetValuePositive {
+    color: #1db954;
+}
+
+.progressWidth45 {
+    width: 45%;
+}
+
+.progressWidth32 {
+    width: 32%;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .dashboard {

@@ -4,16 +4,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const adminLinks = [
-    { href: '/admin', label: 'Dashboard', icon: '📊' },
+    { href: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
     { href: '/admin/users', label: 'Users', icon: '👥' },
-    { href: '/admin/artists', label: 'Artists', icon: '🎤' },
-    { href: '/admin/content', label: 'Content', icon: '🎵' },
+    { href: '/admin/roles', label: 'Roles', icon: '🔐' },
+    { href: '/admin/content', label: 'Music', icon: '🎵' },
+    { href: '/marketplace', label: 'Marketplace', icon: '🛍️' },
     { href: '/admin/tournaments', label: 'Tournaments', icon: '🏆' },
-    { href: '/admin/reports', label: 'Reports', icon: '📈' },
+    { href: '/admin/payments', label: 'Payments', icon: '💳' },
+    { href: '/admin/reports', label: 'Analytics', icon: '📈' },
     { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-export default function AdminNav() {
+export default function AdminNav({ isMobile }: { isMobile?: boolean }) {
     const pathname = usePathname();
     const isActive = (href: string) => pathname === href || pathname.startsWith(href);
 

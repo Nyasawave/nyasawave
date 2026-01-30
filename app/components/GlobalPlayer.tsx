@@ -89,6 +89,7 @@ export default function GlobalPlayer({ track, onTrackChange, autoPlay = false }:
                     max={track.duration}
                     value={currentTime}
                     onChange={handleSeek}
+                    title="Progress bar"
                     className="flex-1 h-1 bg-gray-800 rounded cursor-pointer accent-purple-500"
                 />
                 <span className="text-xs text-gray-400">{formatTime(track.duration)}</span>
@@ -106,24 +107,26 @@ export default function GlobalPlayer({ track, onTrackChange, autoPlay = false }:
                 <div className="flex items-center gap-4 mx-6">
                     <button
                         onClick={() => setIsFavorited(!isFavorited)}
+                        title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
                         className={`p-2 rounded-full transition ${isFavorited ? 'text-red-500' : 'text-gray-400 hover:text-white'
                             }`}
                     >
                         <Heart size={18} fill={isFavorited ? 'currentColor' : 'none'} />
                     </button>
 
-                    <button className="p-2 rounded-full text-gray-400 hover:text-white transition">
+                    <button className="p-2 rounded-full text-gray-400 hover:text-white transition" title="Skip to previous track">
                         <SkipBack size={20} />
                     </button>
 
                     <button
                         onClick={handlePlayPause}
+                        title={isPlaying ? 'Pause' : 'Play'}
                         className="p-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white transition"
                     >
                         {isPlaying ? <Pause size={24} /> : <Play size={24} />}
                     </button>
 
-                    <button className="p-2 rounded-full text-gray-400 hover:text-white transition">
+                    <button className="p-2 rounded-full text-gray-400 hover:text-white transition" title="Skip to next track">
                         <SkipForward size={20} />
                     </button>
 
@@ -135,6 +138,7 @@ export default function GlobalPlayer({ track, onTrackChange, autoPlay = false }:
                             max="100"
                             value={volume}
                             onChange={handleVolumeChange}
+                            title="Volume control"
                             className="w-20 h-1 bg-gray-800 rounded cursor-pointer accent-purple-500"
                         />
                     </div>

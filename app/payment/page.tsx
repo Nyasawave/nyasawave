@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function PaymentPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const user = session?.user;
     const router = useRouter();
     const [selectedPlan, setSelectedPlan] = useState<"monthly" | "annual" | null>(null);
@@ -90,10 +91,10 @@ export default function PaymentPage() {
                     </ul>
                     <button
                         onClick={() => handleCheckout("monthly")}
-                        disabled={loading || user.subscription?.status === "active"}
+                        disabled={loading || user.premiumListener}
                         className="w-full bg-emerald-400 text-black px-6 py-3 rounded font-semibold hover:bg-emerald-300 disabled:bg-zinc-600 disabled:cursor-not-allowed transition"
                     >
-                        {loading ? "Processing..." : user.subscription?.status === "active" ? "Current Plan" : "Subscribe Now"}
+                        {loading ? "Processing..." : user.premiumListener ? "Current Plan" : "Subscribe Now"}
                     </button>
                 </div>
 
@@ -124,21 +125,20 @@ export default function PaymentPage() {
                     </ul>
                     <button
                         onClick={() => handleCheckout("annual")}
-                        disabled={loading || user.subscription?.status === "active"}
+                        disabled={loading || user.premiumListener}
                         className="w-full bg-emerald-400 text-black px-6 py-3 rounded font-semibold hover:bg-emerald-300 disabled:bg-zinc-600 disabled:cursor-not-allowed transition"
                     >
-                        {loading ? "Processing..." : user.subscription?.status === "active" ? "Current Plan" : "Subscribe Now"}
+                        {loading ? "Processing..." : user.premiumListener ? "Current Plan" : "Subscribe Now"}
                     </button>
                 </div>
             </section>
 
             {/* Current Subscription Info */}
-            {user.subscription?.status === "active" && (
+            {user.premiumListener && (
                 <section className="mt-12 max-w-3xl mx-auto p-6 bg-emerald-400/10 border border-emerald-400/20 rounded-lg">
                     <h3 className="text-lg font-semibold mb-2">Your Subscription</h3>
                     <p className="text-zinc-400">
-                        {user.subscription.tier === "premium" && "You have Premium access"}
-                        {user.subscription.expiresAt && ` - Expires on ${new Date(user.subscription.expiresAt).toLocaleDateString()}`}
+                        You have Premium access
                     </p>
                 </section>
             )}

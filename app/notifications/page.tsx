@@ -3,9 +3,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function NotificationsPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [notifications, setNotifications] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -70,8 +71,8 @@ export default function NotificationsPage() {
                             <div
                                 key={notification.id}
                                 className={`p-4 rounded-lg cursor-pointer transition ${notification.read
-                                        ? 'bg-zinc-900 hover:bg-zinc-800'
-                                        : 'bg-green-900/20 border border-green-600/30 hover:bg-green-900/30'
+                                    ? 'bg-zinc-900 hover:bg-zinc-800'
+                                    : 'bg-green-900/20 border border-green-600/30 hover:bg-green-900/30'
                                     }`}
                                 onClick={() => !notification.read && markAsRead(notification.id)}
                             >

@@ -3,71 +3,72 @@
  */
 
 import { Session } from "next-auth";
-import { AuthUser, UserRole } from "./auth-types";
+import type { ExtendedUser } from "@/app/types/auth";
+import { UserRole } from "./auth-types";
 
 /**
  * Check if user has at least one of the required roles
  */
-export function hasRole(user: AuthUser | undefined, ...roles: UserRole[]): boolean {
-    if (!user || !user.roles || user.roles.length === 0) return false;
-    return roles.some(role => user.roles.includes(role));
+export function hasRole(user: ExtendedUser | undefined, ...roles: UserRole[]): boolean {
+    if (!user?.roles || user.roles.length === 0) return false;
+    return roles.some(role => user.roles!.includes(role));
 }
 
 /**
  * Check if user has all of the required roles
  */
-export function hasAllRoles(user: AuthUser | undefined, ...roles: UserRole[]): boolean {
-    if (!user || !user.roles || user.roles.length === 0) return false;
-    return roles.every(role => user.roles.includes(role));
+export function hasAllRoles(user: ExtendedUser | undefined, ...roles: UserRole[]): boolean {
+    if (!user?.roles || user.roles.length === 0) return false;
+    return roles.every(role => user.roles!.includes(role));
 }
 
 /**
  * Check if user is verified (identity verification passed)
  */
-export function isVerified(user: AuthUser | undefined): boolean {
+export function isVerified(user: ExtendedUser | undefined): boolean {
     return !!user?.verified;
 }
 
 /**
  * Check if user has premium listener status
  */
-export function isPremiumListener(user: AuthUser | undefined): boolean {
+export function isPremiumListener(user: ExtendedUser | undefined): boolean {
     return !!user?.premiumListener;
 }
 
 /**
  * Check if user is an artist
  */
-export function isArtist(user: AuthUser | undefined): boolean {
+export function isArtist(user: ExtendedUser | undefined): boolean {
     return hasRole(user, "ARTIST");
 }
 
 /**
  * Check if user is an admin
  */
-export function isAdmin(user: AuthUser | undefined): boolean {
+export function isAdmin(user: ExtendedUser | undefined): boolean {
     return hasRole(user, "ADMIN");
 }
 
 /**
  * Check if user is an entrepreneur (runs a business on marketplace)
  */
-export function isEntrepreneur(user: AuthUser | undefined): boolean {
+export function isEntrepreneur(user: ExtendedUser | undefined): boolean {
     return hasRole(user, "ENTREPRENEUR");
 }
 
 /**
  * Check if user is a marketer
  */
-export function isMarketer(user: AuthUser | undefined): boolean {
+export function isMarketer(user: ExtendedUser | undefined): boolean {
     return hasRole(user, "MARKETER");
 }
 
 /**
  * Get all roles excluding LISTENER (to find "main" role)
  */
-export function getMainRole(user: AuthUser | undefined): UserRole | null {
-    if (!user) return null;
+export function getMainRole(user: ExtendedUser | undefined): UserRole | null {
+    if (!user?.roles) return null;
     const mainRoles = user.roles.filter(r => r !== "LISTENER");
     return mainRoles.length > 0 ? (mainRoles[0] as UserRole) : ("LISTENER" as UserRole);
 }
@@ -75,23 +76,23 @@ export function getMainRole(user: AuthUser | undefined): UserRole | null {
 /**
  * Check if user can switch to a specific persona
  */
-export function canSwitchToPersona(user: AuthUser | undefined, persona: UserRole): boolean {
-    if (!user) return false;
+export function canSwitchToPersona(user: ExtendedUser | undefined, persona: UserRole): boolean {
+    if (!user?.roles) return false;
     return user.roles.includes(persona);
 }
 
 /**
  * Check if user has access to a route based on their roles
  */
-export function hasAccessToRoute(user: AuthUser | undefined, requiredRoles: UserRole[]): boolean {
-    if (!user) return false;
-    return requiredRoles.some(role => user.roles.includes(role));
+export function hasAccessToRoute(user: ExtendedUser | undefined, requiredRoles: UserRole[]): boolean {
+    if (!user?.roles) return false;
+    return requiredRoles.some(role => user.roles!.includes(role));
 }
 
 /**
  * Check if user can access premium features
  */
-export function canAccessPremiumFeatures(user: AuthUser | undefined): boolean {
+export function canAccessPremiumFeatures(user: ExtendedUser | undefined): boolean {
     return isPremiumListener(user) || isArtist(user) || isAdmin(user);
 }
 
@@ -126,8 +127,8 @@ export function getRoleDescription(role: UserRole): string {
 /**
  * Check if user should see the persona switcher
  */
-export function shouldShowPersonaSwitcher(user: AuthUser | undefined): boolean {
-    if (!user) return false;
+export function shouldShowPersonaSwitcher(user: ExtendedUser | undefined): boolean {
+    if (!user?.roles) return false;
     // Show if user has more than one role
     return user.roles.length > 1;
 }
@@ -136,8 +137,8 @@ export function shouldShowPersonaSwitcher(user: AuthUser | undefined): boolean {
  * SECURITY: Admin email must never be exposed in UI/profile pages
  * This function helps filter admin-specific content
  */
-export function isHiddenAdmin(user: AuthUser | undefined): boolean {
-    if (!user) return false;
+export function isHiddenAdmin(user: ExtendedUser | undefined): boolean {
+    if (!user?.email) return false;
     // Check if user is ADMIN and has the special admin email
     return isAdmin(user) && user.email === "trapkost2020@gmail.com";
 }
@@ -146,7 +147,7 @@ export function isHiddenAdmin(user: AuthUser | undefined): boolean {
  * Get display name for user (with hidden admin protection)
  * Returns generic name for hidden admin to prevent email exposure
  */
-export function getDisplayName(user: AuthUser | undefined): string {
+export function getDisplayName(user: ExtendedUser | undefined): string {
     if (!user) return "User";
     if (isHiddenAdmin(user)) {
         return "Administrator"; // Hide actual name/email
@@ -155,4 +156,5 @@ export function getDisplayName(user: AuthUser | undefined): string {
 }
 
 // Re-export types for backward compatibility
-export type { AuthUser, UserRole } from "./auth-types";
+export type { ExtendedUser } from "@/app/types/auth";
+export type { UserRole } from "./auth-types";

@@ -3,7 +3,7 @@
     "id": "792ee78e2edceb2f",
     "title": "Sende",
     "artist": "Trap Kost",
-    "artistId": "b5af42d9f227f134",
+    "artistId": "user_1768812016661",
     "album": "Single",
     "genre": "Afrobeats",
     "src": "/audio/uploaded.mp3",
@@ -22,7 +22,8 @@
     "createdAt": "2026-01-08T21:40:27.340Z",
     "uploadedAt": "1/8/2026",
     "visible": true,
-    "playable": true
+    "playable": true,
+    "scheduledAt": "2026-01-29T09:29"
   },
   {
     "id": "0e00aa590c9a03b7",
@@ -46,6 +47,31 @@
     "copyrightStatus": "clear",
     "createdAt": "2026-01-20T03:34:11.537Z",
     "uploadedAt": "1/20/2026",
+    "visible": true,
+    "playable": true
+  },
+  {
+    "id": "81d34b1a96a201bb",
+    "title": "Velocity",
+    "artist": "Traper",
+    "artistId": "user_1768812016661",
+    "album": "Single",
+    "genre": "Hip-Hop",
+    "src": "/audio/uploaded.mp3",
+    "streamUrl": "/audio/uploaded.mp3",
+    "cover": "/covers/default.jpg",
+    "duration": 246,
+    "plays": 0,
+    "likes": 0,
+    "description": "trap trap",
+    "composer": "Traper",
+    "producer": "Dav Gee-Roe",
+    "releaseDate": "2026-01-26",
+    "copyrightHolder": "traper",
+    "isOriginal": true,
+    "copyrightStatus": "unchecked",
+    "createdAt": "2026-01-26T02:05:02.473Z",
+    "uploadedAt": "1/26/2026",
     "visible": true,
     "playable": true
   }

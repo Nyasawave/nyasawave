@@ -2,9 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function Upload() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
   const user = session?.user;
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState<string | null>(null);

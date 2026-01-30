@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const entrepreneurLinks = [
-    { href: '/entrepreneur', label: 'Dashboard', icon: '📊' },
-    { href: '/marketplace', label: 'Marketplace', icon: '🛒' },
-    { href: '/marketplace/products', label: 'My Products', icon: '📦' },
-    { href: '/entrepreneur/payments', label: 'Payments', icon: '💳' },
+    { href: '/entrepreneur/dashboard', label: 'Dashboard', icon: '📊' },
+    { href: '/marketplace', label: 'Marketplace', icon: '🛍️' },
+    { href: '/marketplace/products', label: 'Listings', icon: '📦' },
+    { href: '/orders', label: 'Orders', icon: '📋' },
+    { href: '/marketplace/chat', label: 'Chat', icon: '💬' },
+    { href: '/entrepreneur/payments', label: 'Wallet', icon: '💰' },
     { href: '/entrepreneur/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-export default function EntrepreneurNav() {
+export default function EntrepreneurNav({ isMobile }: { isMobile?: boolean }) {
     const pathname = usePathname();
     const isActive = (href: string) => pathname === href || pathname.startsWith(href);
 

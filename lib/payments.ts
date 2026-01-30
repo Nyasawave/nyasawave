@@ -1,6 +1,8 @@
 // Malawi Mobile Money Payment Integration
 // Supports: Airtel Money, TNM Mpamba, Stripe, PayPal
 
+import { getFullURL } from './config';
+
 export type PaymentProvider = 'AIRTEL_MONEY' | 'TNM_MPAMBA' | 'STRIPE' | 'PAYPAL' | 'APPLE_PAY';
 
 export interface PaymentMethod {
@@ -154,7 +156,7 @@ class MalawiPaymentGateway {
           currency: request.currency,
           phoneNumber: request.metadata?.phoneNumber,
           transactionDescription: request.description,
-          callbackUrl: `${process.env.NEXTAUTH_URL}/api/payments/callback`,
+          callbackUrl: getFullURL('/api/payments/callback'),
         }),
       });
 
@@ -191,7 +193,7 @@ class MalawiPaymentGateway {
           amount: request.amount,
           phoneNumber: request.metadata?.phoneNumber,
           description: request.description,
-          returnUrl: `${process.env.NEXTAUTH_URL}/api/payments/verify`,
+          returnUrl: getFullURL('/api/payments/verify'),
         }),
       });
 

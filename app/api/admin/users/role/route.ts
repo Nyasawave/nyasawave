@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
-import { prisma } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 
 /**
  * POST /api/admin/users/role
@@ -24,16 +24,16 @@ export async function POST(req: NextRequest) {
 
         const { userId, newRole } = await req.json();
 
-        if (!userId || !['admin', 'artist', 'fan'].includes(newRole)) {
+        if (!userId || !['ADMIN', 'ARTIST', 'LISTENER', 'ENTREPRENEUR', 'MARKETER'].includes(String(newRole).toUpperCase())) {
             return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
         }
 
         // Normalize role to Prisma enum (uppercase)
-        const normalized = String(newRole).toUpperCase();
+        const normalized = String(newRole).toUpperCase() as 'ADMIN' | 'ARTIST' | 'LISTENER' | 'ENTREPRENEUR' | 'MARKETER';
 
         const user = await prisma.user.update({
             where: { id: userId },
-            data: { role: normalized as any },
+            data: { roles: [normalized] },
         });
 
         // Create audit log

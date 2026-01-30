@@ -1,4 +1,24 @@
 
-> nyasawave@0.1.0 build E:\nyasawave-projects\nyasawave
+> nyasawave@0.1.0 build
 > next build
 
+Ôû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+ÔÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 57s
+  Running TypeScript ...
+Failed to compile.
+
+./app/hooks/usePersonaSwitcher.ts:49:20
+Type error: 'session.user.roles' is possibly 'undefined'.
+
+  47 |         (persona: UserRole): boolean => {
+  48 |             if (!session?.user) return false;
+> 49 |             return session.user.roles.includes(persona);
+     |                    ^
+  50 |         },
+  51 |         [session?.user]
+  52 |     );
+Next.js build worker exited with code: 1 and signal: null

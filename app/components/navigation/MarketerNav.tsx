@@ -4,13 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const marketerLinks = [
-    { href: '/marketer', label: 'Dashboard', icon: '📊' },
+    { href: '/marketer/dashboard', label: 'Dashboard', icon: '📊' },
+    { href: '/marketplace', label: 'Marketplace', icon: '🛍️' },
     { href: '/marketer/artists', label: 'Artists', icon: '🎤' },
-    { href: '/marketer/earnings', label: 'Earnings', icon: '💰' },
+    { href: '/marketer/earnings', label: 'Sales', icon: '📈' },
+    { href: '/marketplace/chat', label: 'Chat', icon: '💬' },
+    { href: '/marketer/earnings', label: 'Wallet', icon: '💰' },
     { href: '/marketer/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-export default function MarketerNav() {
+export default function MarketerNav({ isMobile }: { isMobile?: boolean }) {
     const pathname = usePathname();
     const isActive = (href: string) => pathname === href || pathname.startsWith(href);
 

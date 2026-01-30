@@ -4,9 +4,10 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ArtistDashboard() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [stats, setStats] = useState({
         totalTracks: 0,

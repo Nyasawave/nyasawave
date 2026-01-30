@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function ArtistSignInPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
   const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +16,7 @@ export default function ArtistSignInPage() {
 
   // Redirect if already authenticated as artist
   useEffect(() => {
-    if (session?.user?.role === 'ARTIST') {
+    if (session?.user?.roles?.includes('ARTIST')) {
       router.push('/artist/dashboard');
     }
   }, [session, router]);

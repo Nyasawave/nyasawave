@@ -3,9 +3,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function AccountSettingsPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [formData, setFormData] = useState({
         name: '',
@@ -85,6 +86,7 @@ export default function AccountSettingsPage() {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
+                            placeholder="Enter your full name"
                             className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:border-green-600 focus:outline-none"
                         />
                     </div>
@@ -96,6 +98,7 @@ export default function AccountSettingsPage() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            placeholder="Enter your email address"
                             className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:border-green-600 focus:outline-none"
                         />
                     </div>
@@ -107,6 +110,7 @@ export default function AccountSettingsPage() {
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
+                            placeholder="Enter your username"
                             className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:border-green-600 focus:outline-none"
                         />
                     </div>
@@ -117,6 +121,7 @@ export default function AccountSettingsPage() {
                             name="bio"
                             value={formData.bio}
                             onChange={handleChange}
+                            placeholder="Tell us about yourself"
                             rows={4}
                             className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:border-green-600 focus:outline-none"
                         />

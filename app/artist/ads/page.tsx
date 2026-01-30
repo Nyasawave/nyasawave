@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '@/app/context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { MOCK_AD_SLOTS } from '@/lib/mockAds';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface FormData {
     title: string;
@@ -33,7 +34,8 @@ interface Ad {
 }
 
 export default function CreateAd() {
-    const { user, token } = useAuth();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
+    const user = session?.user;
     const [tab, setTab] = useState<'create' | 'manage'>('create');
     const [formData, setFormData] = useState<FormData>({
         title: '',
@@ -52,17 +54,17 @@ export default function CreateAd() {
 
     // Fetch ads on mount and when tab changes
     useEffect(() => {
-        if (user && user.roles?.includes('ARTIST') && token && tab === 'manage') {
+        if (user && user.roles?.includes('ARTIST') && tab === 'manage') {
             fetchAds();
         }
-    }, [user, token, tab]);
+    }, [user, tab]);
 
     const fetchAds = async () => {
         setAdsLoading(true);
         try {
             const response = await fetch('/api/artist/ads', {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
             });
             if (!response.ok) throw new Error('Failed to fetch ads');
@@ -104,7 +106,6 @@ export default function CreateAd() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -126,7 +127,7 @@ export default function CreateAd() {
             });
             setTimeout(() => setSuccess(false), 3000);
             // Refresh ads list
-            if (token) fetchAds();
+            fetchAds();
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to create ad');
         } finally {
@@ -140,7 +141,6 @@ export default function CreateAd() {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ adId, action }),
             });

@@ -3,11 +3,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRole } from '@/app/context/RoleContext';
 import { useSession, signOut } from 'next-auth/react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function RoleContextSwitcher() {
     const [isOpen, setIsOpen] = useState(false);
     const { activeRole, availableRoles, switchRole, isLoading, error } = useRole();
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const menuRef = useRef<HTMLDivElement>(null);
 
     // Role display names
@@ -47,8 +48,8 @@ export default function RoleContextSwitcher() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${isOpen
-                        ? 'bg-zinc-700 text-white'
-                        : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'
+                    ? 'bg-zinc-700 text-white'
+                    : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'
                     }`}
             >
                 <span className="text-sm hidden sm:inline">Operating as:</span>
@@ -76,8 +77,8 @@ export default function RoleContextSwitcher() {
                                     }}
                                     disabled={isLoading || role === activeRole}
                                     className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors disabled:opacity-50 ${role === activeRole
-                                            ? `${roleColors[role]} text-white font-semibold flex items-center gap-2`
-                                            : 'text-zinc-300 hover:bg-zinc-700 hover:text-white'
+                                        ? `${roleColors[role]} text-white font-semibold flex items-center gap-2`
+                                        : 'text-zinc-300 hover:bg-zinc-700 hover:text-white'
                                         }`}
                                 >
                                     {role === activeRole && <span>✓</span>}
@@ -106,7 +107,7 @@ export default function RoleContextSwitcher() {
                         <button
                             onClick={() => {
                                 setIsOpen(false);
-                                signOut({ redirectUrl: '/login' });
+                                signOut({ redirect: true });
                             }}
                             className="w-full text-left px-3 py-2 text-red-400 hover:bg-red-900/20 rounded-lg text-sm transition-colors"
                         >

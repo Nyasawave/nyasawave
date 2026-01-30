@@ -57,9 +57,9 @@ export function ProtectedPageWrapper({
         }
 
         // 3. CHECK ROLE - Check if user has any of the required roles
-        const userRoles = session.user.roles || [];
+        const userRoles = (session.user as any).roles || [];
         const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
-        
+
         if (!hasRequiredRole) {
             console.log(
                 `[AUTH] Unauthorized roles ${userRoles.join(',')} for protected page, redirecting to ${fallbackUrl}`
@@ -142,9 +142,9 @@ export function useProtectedPage(requiredRoles: string[]) {
         }
 
         // Check role
-        const userRoles = session.user.roles || [];
+        const userRoles = (session.user as any).roles || [];
         const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
-        
+
         if (!hasRequiredRole) {
             console.log(`[AUTH] Roles ${userRoles.join(',')} not authorized, redirecting`);
             // Don't redirect yet - let caller handle it
@@ -157,8 +157,8 @@ export function useProtectedPage(requiredRoles: string[]) {
     return {
         isLoading: status === "loading" || !hasChecked,
         isAuthorized,
-        activePersona: session?.user?.activePersona || "",
-        roles: session?.user?.roles || [],
+        activePersona: (session?.user as any)?.activePersona || "",
+        roles: (session?.user as any)?.roles || [],
         user: session?.user,
     };
 }

@@ -72,7 +72,12 @@ const NEVER_REDIRECT_ROUTES = [
 
 async function getSessionToken(request: NextRequest) {
     try {
-        const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+        const secret = process.env.NEXTAUTH_SECRET;
+        if (!secret) {
+            console.warn('[MIDDLEWARE] NEXTAUTH_SECRET is not set - session verification will fail');
+            return null;
+        }
+        const token = await getToken({ req: request, secret });
         return token;
     } catch (error) {
         console.error('[MIDDLEWARE] Token verification failed:', error);

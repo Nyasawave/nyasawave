@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import MarketerNav from '@/app/components/navigation/MarketerNav';
 import RoleContextSwitcher from '@/app/components/RoleContextSwitcher';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface MarketerStats {
     activeCampaigns: number;
@@ -14,7 +15,7 @@ interface MarketerStats {
 }
 
 export default function MarketerDashboard() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [stats, setStats] = useState<MarketerStats | null>(null);
 
@@ -23,7 +24,7 @@ export default function MarketerDashboard() {
             router.push('/auth/login');
         } else if (status === 'authenticated') {
             // Check if user has MARKETER role
-            if (!(session?.user as any)?.roles?.includes('MARKETER')) {
+            if (!session?.user?.roles?.includes('MARKETER')) {
                 router.push('/');
             } else {
                 fetchStats();

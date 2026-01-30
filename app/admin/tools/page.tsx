@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface SystemStats {
     totalUsers: number;
@@ -32,7 +33,7 @@ interface Transaction {
 }
 
 export default function AdminToolsPage() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [stats, setStats] = useState<SystemStats | null>(null);
     const [activeTab, setActiveTab] = useState('overview');
@@ -51,7 +52,7 @@ export default function AdminToolsPage() {
         }
         if (
             session &&
-            !session.user?.roles?.includes('ADMIN')
+            !(session.user as any)?.roles?.includes('ADMIN')
         ) {
             router.push('/');
         }
@@ -59,7 +60,7 @@ export default function AdminToolsPage() {
 
     // Fetch dashboard data
     useEffect(() => {
-        if (session && session.user?.roles?.includes('ADMIN')) {
+        if (session && (session.user as any)?.roles?.includes('ADMIN')) {
             fetchStats();
             fetchUsers();
             fetchTransactions();
@@ -162,7 +163,7 @@ export default function AdminToolsPage() {
         return <div className="p-8 text-center">Loading...</div>;
     }
 
-    if (!session?.user?.roles?.includes('ADMIN')) {
+    if (!(session?.user as any)?.roles?.includes('ADMIN')) {
         return <div className="p-8 text-center text-red-600">Unauthorized</div>;
     }
 
@@ -192,8 +193,8 @@ export default function AdminToolsPage() {
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`px-4 py-2 font-semibold transition ${activeTab === tab
-                                    ? 'text-yellow-400 border-b-2 border-yellow-400'
-                                    : 'text-gray-400 hover:text-gray-200'
+                                ? 'text-yellow-400 border-b-2 border-yellow-400'
+                                : 'text-gray-400 hover:text-gray-200'
                                 }`}
                         >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -321,7 +322,7 @@ export default function AdminToolsPage() {
                             <button
                                 onClick={() =>
                                     handleImpersonate(
-                                        document.querySelector('input[placeholder="User ID or Email"]')?.value || ''
+                                        (document.querySelector('input[placeholder="User ID or Email"]') as HTMLInputElement)?.value || ''
                                     )
                                 }
                                 disabled={loading}
@@ -389,8 +390,8 @@ export default function AdminToolsPage() {
                                             <td className="px-4 py-2">
                                                 <span
                                                     className={`text-xs px-2 py-1 rounded ${tx.status === 'COMPLETED'
-                                                            ? 'bg-green-900/30 text-green-400'
-                                                            : 'bg-yellow-900/30 text-yellow-400'
+                                                        ? 'bg-green-900/30 text-green-400'
+                                                        : 'bg-yellow-900/30 text-yellow-400'
                                                         }`}
                                                 >
                                                     {tx.status}

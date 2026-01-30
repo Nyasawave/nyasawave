@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ArtistKYCPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const user = session?.user;
     const router = useRouter();
     const [loading, setLoading] = useState(false);

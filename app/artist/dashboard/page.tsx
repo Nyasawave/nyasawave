@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ArtistDashboard() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
   const router = useRouter();
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [tracks, setTracks] = useState<any[]>([]);
@@ -31,33 +32,6 @@ export default function ArtistDashboard() {
 
   // Check if user is authenticated and is an artist
   const user = (session?.user as any);
-  if (isAuthLoading || status === 'loading') {
-    return (
-      <main className="min-h-screen p-6 max-w-4xl mx-auto pt-32 text-center">
-        <div className="inline-block">
-          <div className="w-8 h-8 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-        <p className="text-zinc-400 mt-4">Loading...</p>
-      </main>
-    );
-  }
-
-  if (!session?.user || !(session?.user as any)?.roles?.includes('ARTIST')) {
-    return (
-      <main className="min-h-screen p-6 max-w-4xl mx-auto pt-32 text-center">
-        <h1 className="text-3xl font-bold">Artist Only</h1>
-        <p className="text-zinc-400 mt-4">This page is for artists only.</p>
-        <Link href="/artist/signin" className="text-emerald-400 mt-6 inline-block hover:underline">
-          Sign in as an artist
-        </Link>
-      </main>
-    );
-  }
-
-  useEffect(() => {
-    if (!user || !user.roles?.includes('ARTIST')) return;
-    fetchTracks();
-  }, [user]);
 
   const fetchTracks = async () => {
     setLoading(true);
@@ -72,6 +46,11 @@ export default function ArtistDashboard() {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (!user || !user.roles?.includes('ARTIST')) return;
+    fetchTracks();
+  }, [user]);
 
   const handleLogout = () => {
     signOut();

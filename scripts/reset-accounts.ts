@@ -93,7 +93,7 @@ async function createTestAccounts() {
                     email: account.email,
                     name: account.name,
                     password: account.password, // In production, this should be hashed
-                    role: account.role as any,
+                    roles: account.role === 'ADMIN' ? ['ADMIN'] : account.role === 'ARTIST' ? ['ARTIST', 'LISTENER'] : ['LISTENER'],
                     verified: true,
                 },
             });

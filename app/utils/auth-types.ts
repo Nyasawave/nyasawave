@@ -1,17 +1,9 @@
 /**
  * Authentication Types - Separate file for type definitions
+ * Re-exports from app/types/auth.ts for backwards compatibility
  */
 
-import { Session } from "next-auth";
+export type { ExtendedUser, ExtendedSession } from "@/app/types/auth";
 
 export type UserRole = "ADMIN" | "ARTIST" | "ENTREPRENEUR" | "MARKETER" | "LISTENER";
 
-export interface AuthUser extends Session["user"] {
-    id: string;
-    email?: string;
-    name?: string;
-    roles: UserRole[];
-    activePersona: UserRole;
-    premiumListener: boolean;
-    verified: boolean;
-}

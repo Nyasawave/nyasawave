@@ -4,9 +4,10 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function CreateTournament() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [formData, setFormData] = useState({
         title: '',
@@ -24,7 +25,7 @@ export default function CreateTournament() {
         return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
     }
 
-    if (status === 'unauthenticated' || !(session?.user as any)?.roles?.includes('ADMIN')) {
+    if (status === 'unauthenticated' || !session?.user?.roles?.includes('ADMIN')) {
         return (
             <main className="min-h-screen p-6 max-w-4xl mx-auto pt-32 text-center">
                 <h1 className="text-3xl font-bold">Admin Only</h1>
@@ -79,6 +80,7 @@ export default function CreateTournament() {
                                 type="text"
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                placeholder="Enter tournament title"
                                 className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                                 required
                             />
@@ -89,6 +91,7 @@ export default function CreateTournament() {
                             <textarea
                                 value={formData.description}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                placeholder="Describe the tournament"
                                 className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                                 rows={4}
                             />
@@ -101,6 +104,7 @@ export default function CreateTournament() {
                                     type="number"
                                     value={formData.entryFee}
                                     onChange={(e) => setFormData({ ...formData, entryFee: Number(e.target.value) })}
+                                    placeholder="0"
                                     className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                                 />
                             </div>
@@ -110,6 +114,7 @@ export default function CreateTournament() {
                                     type="number"
                                     value={formData.prizePool}
                                     onChange={(e) => setFormData({ ...formData, prizePool: Number(e.target.value) })}
+                                    placeholder="0"
                                     className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                                     required
                                 />
@@ -123,6 +128,7 @@ export default function CreateTournament() {
                                     type="date"
                                     value={formData.startDate}
                                     onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                                    placeholder="Select start date"
                                     className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                                     required
                                 />
@@ -133,6 +139,7 @@ export default function CreateTournament() {
                                     type="date"
                                     value={formData.endDate}
                                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                                    placeholder="Select end date"
                                     className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                                     required
                                 />
@@ -145,6 +152,7 @@ export default function CreateTournament() {
                                 type="number"
                                 value={formData.maxParticipants}
                                 onChange={(e) => setFormData({ ...formData, maxParticipants: Number(e.target.value) })}
+                                placeholder="0"
                                 className="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-2 text-white"
                             />
                         </div>

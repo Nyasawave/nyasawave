@@ -1,19 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '../../context/AuthContext';
+import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ArtistDashboard() {
-  const { user, signOut } = useAuth();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
+  const user = session?.user;
   const router = useRouter();
   const [tracks, setTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [scheduling, setScheduling] = useState<Record<string, string>>({});
   const [boostHours, setBoostHours] = useState<Record<string, number>>({});
 
-  if (!user || user.role !== 'ARTIST') {
+  if (!user || !user.roles?.includes('ARTIST')) {
     return (
       <main className="min-h-screen p-6 max-w-4xl mx-auto pt-32 text-center">
         <h1 className="text-3xl font-bold">Artist Only</h1>
@@ -26,7 +28,7 @@ export default function ArtistDashboard() {
   }
 
   useEffect(() => {
-    if (!user || user.role !== 'ARTIST') return;
+    if (!user || !user.roles?.includes('ARTIST')) return;
     fetchTracks();
   }, [user]);
 

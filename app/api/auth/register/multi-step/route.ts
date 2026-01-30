@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../[...nextauth]/route";
+import { authOptions } from "../../[...nextauth]/route";
 import fs from "fs/promises";
 import path from "path";
 import bcrypt from "bcryptjs";
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
         const hashedPassword = await hashPassword(password);
 
         // Build roles array
-        let roles = [primaryRole];
+        let roles: string[] = [primaryRole];
         if (primaryRole !== "LISTENER") {
             roles.push("LISTENER"); // Everyone gets listener
         }

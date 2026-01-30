@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -89,6 +88,10 @@ model User {
   
   // Theme preferences
   themePreference  ThemePreference?
+  
+  // Escrow relations
+  escrowAsBuyer    Escrow[]   @relation("EscrowBuyer")
+  escrowAsSeller   Escrow[]   @relation("EscrowSeller")
 
   @@index([email])
   @@index([verified])
@@ -416,6 +419,8 @@ model Order {
   shippingAddress String?
   trackingNumber  String?
   
+  escrow       Escrow?
+  
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   
@@ -736,9 +741,13 @@ model TournamentPrize {
 model Escrow {
   id              String   @id @default(cuid())
   orderId         String   @unique
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   
   buyerId         String
+  buyer           User     @relation("EscrowBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  
   sellerId        String
+  seller          User     @relation("EscrowSeller", fields: [sellerId], references: [id], onDelete: Cascade)
   
   amount          Float
   currency        String   @default("MWK")

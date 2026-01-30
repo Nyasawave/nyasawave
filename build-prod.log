@@ -1,0 +1,17 @@
+
+> nyasawave@0.1.0 build
+> next build
+
+Ôû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+ÔÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 152.7min
+  Running TypeScript ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/162) ...
+  Generating static pages using 3 workers (40/162) 
+  Generating static pages using 3 workers (80/162) 
+  Generating static pages using 3 workers (121/162) 
+Ô¿» Next.js build worker exited with code: 3221225786 and signal: null

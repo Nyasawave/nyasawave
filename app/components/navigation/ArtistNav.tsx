@@ -4,15 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const artistLinks = [
-    { href: '/artist', label: 'Dashboard', icon: '🎵' },
-    { href: '/artist/upload', label: 'Upload Music', icon: '⬆️' },
+    { href: '/artist/dashboard', label: 'Dashboard', icon: '🎵' },
+    { href: '/artist/upload', label: 'Upload', icon: '⬆️' },
     { href: '/artist/tracks', label: 'My Songs', icon: '🎧' },
     { href: '/artist/analytics', label: 'Analytics', icon: '📊' },
-    { href: '/artist/earnings', label: 'Earnings', icon: '💰' },
+    { href: '/tournaments', label: 'Tournaments', icon: '🏆' },
+    { href: '/marketplace', label: 'Marketplace', icon: '🛍️' },
+    { href: '/artist/earnings', label: 'Wallet', icon: '💰' },
     { href: '/artist/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-export default function ArtistNav() {
+export default function ArtistNav({ isMobile }: { isMobile?: boolean }) {
     const pathname = usePathname();
     const isActive = (href: string) => pathname === href || pathname.startsWith(href);
 

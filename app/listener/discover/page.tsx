@@ -4,9 +4,10 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ListenerDiscoverPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [tracks, setTracks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);

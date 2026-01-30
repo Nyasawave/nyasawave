@@ -4,9 +4,10 @@ import { useState, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 function CheckoutContent() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const user = session?.user;
     const router = useRouter();
     const searchParams = useSearchParams();

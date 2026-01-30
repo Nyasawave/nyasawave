@@ -5,9 +5,10 @@ import Modal from "./Modal";
 import Input from "./Input";
 import Button from "./Button";
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function FanSupport({ artistId, artistName }: { artistId: string; artistName: string }) {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
   const user = session?.user;
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(100);

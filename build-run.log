@@ -1,0 +1,4 @@
+
+> nyasawave@0.1.0 build E:\nyasawave-projects\nyasawave
+> prisma generate && next build
+

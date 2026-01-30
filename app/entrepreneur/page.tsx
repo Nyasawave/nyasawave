@@ -4,15 +4,16 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function EntrepreneurPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [businesses, setBusinesses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (session && !session.user.roles?.includes('ENTREPRENEUR')) {
+        if (session && !(session.user as any).roles?.includes('ENTREPRENEUR')) {
             router.push('/unauthorized');
         }
     }, [session, router]);
@@ -32,7 +33,7 @@ export default function EntrepreneurPage() {
             }
         };
 
-        if (session?.user?.roles?.includes('ENTREPRENEUR')) {
+        if ((session?.user as any)?.roles?.includes('ENTREPRENEUR')) {
             fetchBusinesses();
         }
     }, [session]);

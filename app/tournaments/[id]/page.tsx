@@ -3,9 +3,10 @@
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function TournamentDetailPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const params = useParams();
     const id = params.id as string;
     const [tournament, setTournament] = useState<any>(null);
@@ -85,8 +86,8 @@ export default function TournamentDetailPage() {
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={`flex-1 py-4 px-6 text-center font-semibold transition ${activeTab === tab
-                                        ? "text-white border-b-2 border-green-500"
-                                        : "text-zinc-400 hover:text-zinc-300"
+                                    ? "text-white border-b-2 border-green-500"
+                                    : "text-zinc-400 hover:text-zinc-300"
                                     }`}
                             >
                                 {tab.charAt(0).toUpperCase() + tab.slice(1)}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import styles from "./MarketerDashboard.module.css";
 
 /**
@@ -14,7 +15,7 @@ import styles from "./MarketerDashboard.module.css";
  */
 
 export default function MarketerDashboard() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [metrics, setMetrics] = useState({
         impressions: 0,
@@ -126,14 +127,14 @@ export default function MarketerDashboard() {
                             <div className={styles.analyticsCard}>
                                 <p className={styles.cardTitle}>Click-Through Rate</p>
                                 <div className={styles.progressBar}>
-                                    <div className={styles.progress} style={{ width: "45%" }} />
+                                    <div className={`${styles.progress} ${styles.progressWidth45}`} />
                                 </div>
                                 <p className={styles.cardValue}>4.5%</p>
                             </div>
                             <div className={styles.analyticsCard}>
                                 <p className={styles.cardTitle}>Conversion Rate</p>
                                 <div className={styles.progressBar}>
-                                    <div className={styles.progress} style={{ width: "32%" }} />
+                                    <div className={`${styles.progress} ${styles.progressWidth32}`} />
                                 </div>
                                 <p className={styles.cardValue}>3.2%</p>
                             </div>
@@ -185,7 +186,7 @@ export default function MarketerDashboard() {
                             </div>
                             <div className={styles.budgetItem}>
                                 <p className={styles.budgetLabel}>Remaining</p>
-                                <p className={styles.budgetValue} style={{ color: "#1db954" }}>
+                                <p className={`${styles.budgetValue} ${styles.budgetValuePositive}`}>
                                     $1,000.00
                                 </p>
                             </div>

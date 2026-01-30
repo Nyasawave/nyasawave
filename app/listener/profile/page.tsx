@@ -3,14 +3,15 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ListenerProfilePage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (session && !(session.user as any).roles?.includes('LISTENER')) {
+        if (session && !session.user?.roles?.includes('LISTENER')) {
             router.push('/unauthorized');
         }
         setLoading(false);

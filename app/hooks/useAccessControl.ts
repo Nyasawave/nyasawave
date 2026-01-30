@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useCallback } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 import { checkAccess, AccessCheckParams, AccessResult } from "@/app/utils/accessControl";
 
 /**
@@ -16,7 +17,7 @@ import { checkAccess, AccessCheckParams, AccessResult } from "@/app/utils/access
  */
 
 export function useAccessControl() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const user = session?.user;
 
     const check = useCallback(

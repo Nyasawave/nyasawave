@@ -34,10 +34,17 @@ export const validation = {
   },
 
   url: (url: string): boolean => {
+    // Safety: Never throw during validation
+    // Return false for invalid or empty URLs
+    if (!url || typeof url !== 'string' || url.trim().length === 0) {
+      return false;
+    }
     try {
-      new URL(url);
-      return true;
-    } catch {
+      // Only validate URLs if we can safely construct them
+      const testUrl = new URL(url, 'http://localhost');
+      return testUrl.protocol === 'http:' || testUrl.protocol === 'https:';
+    } catch (error) {
+      // Log silently and return false - never throw
       return false;
     }
   },

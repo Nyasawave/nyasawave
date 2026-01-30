@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import Link from "next/link";
 import styles from "./ArtistDashboard.module.css";
 
@@ -27,10 +28,13 @@ interface EarningsData {
     totalEarnings: number;
     monthlyEarnings: number;
     topTrack?: Track;
+    released?: number;
+    availableForPayout?: number;
+    pending?: number;
 }
 
 export default function ArtistDashboard() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const [tracks, setTracks] = useState<Track[]>([]);
     const [earnings, setEarnings] = useState<EarningsData | null>(null);
     const [loading, setLoading] = useState(true);

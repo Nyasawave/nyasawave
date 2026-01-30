@@ -4,16 +4,17 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function ListenerPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [recentPlays, setRecentPlays] = useState<any[]>([]);
     const [playlists, setPlaylists] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (session && !session.user.roles?.includes('LISTENER')) {
+        if (session && !session.user?.roles?.includes('LISTENER')) {
             router.push('/unauthorized');
         }
     }, [session, router]);

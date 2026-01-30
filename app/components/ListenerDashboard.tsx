@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import Link from "next/link";
 import styles from "./ListenerDashboard.module.css";
 
@@ -15,7 +16,7 @@ import styles from "./ListenerDashboard.module.css";
  */
 
 export default function ListenerDashboard() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const [playlists, setPlaylists] = useState<any[]>([]);
     const [subscription, setSubscription] = useState<any>(null);
     const [loading, setLoading] = useState(true);

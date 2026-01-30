@@ -1,0 +1,92 @@
+
+> nyasawave@0.1.0 build
+> next build
+
+Ôû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+ÔÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 5 errors:
+./app/api/admin/artists/verify/route.ts:3:1
+Export prisma doesn't exist in target module
+  1 | import { NextRequest, NextResponse } from 'next/server';
+  2 | import { verifyToken } from '@/lib/auth';
+> 3 | import { prisma } from '@/lib/db';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * POST /api/admin/artists/verify
+
+The export prisma was not found in module [project]/lib/db.ts [app-route] (ecmascript).
+Did you mean to import mockPrisma?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+./app/api/admin/audit/route.ts:3:1
+Export prisma doesn't exist in target module
+  1 | import { NextRequest, NextResponse } from 'next/server';
+  2 | import { verifyToken } from '@/lib/auth';
+> 3 | import { prisma } from '@/lib/db';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * GET /api/admin/audit
+
+The export prisma was not found in module [project]/lib/db.ts [app-route] (ecmascript).
+Did you mean to import mockPrisma?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+./app/api/admin/users/ban/route.ts:3:1
+Export prisma doesn't exist in target module
+  1 | import { NextRequest, NextResponse } from 'next/server';
+  2 | import { verifyToken } from '@/lib/auth';
+> 3 | import { prisma } from '@/lib/db';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * POST /api/admin/users/ban
+
+The export prisma was not found in module [project]/lib/db.ts [app-route] (ecmascript).
+Did you mean to import mockPrisma?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+./app/api/admin/users/role/route.ts:3:1
+Export prisma doesn't exist in target module
+  1 | import { NextRequest, NextResponse } from 'next/server';
+  2 | import { verifyToken } from '@/lib/auth';
+> 3 | import { prisma } from '@/lib/db';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * POST /api/admin/users/role
+
+The export prisma was not found in module [project]/lib/db.ts [app-route] (ecmascript).
+Did you mean to import mockPrisma?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+./app/api/admin/users/route.ts:3:1
+Export prisma doesn't exist in target module
+  1 | import { NextRequest, NextResponse } from 'next/server';
+  2 | import { verifyToken } from '@/lib/auth';
+> 3 | import { prisma } from '@/lib/db';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * GET /api/admin/users
+
+The export prisma was not found in module [project]/lib/db.ts [app-route] (ecmascript).
+Did you mean to import mockPrisma?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+    at <unknown> (./app/api/admin/artists/verify/route.ts:3:1)
+    at <unknown> (./app/api/admin/audit/route.ts:3:1)
+    at <unknown> (./app/api/admin/users/ban/route.ts:3:1)
+    at <unknown> (./app/api/admin/users/role/route.ts:3:1)
+    at <unknown> (./app/api/admin/users/route.ts:3:1)

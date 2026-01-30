@@ -14,7 +14,7 @@ import {
     CardElement,
     Elements,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/js";
+import { loadStripe } from "@stripe/stripe-js";
 import styles from "./CheckoutForm.module.css";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface Tournament {
     id: string;
@@ -18,7 +19,7 @@ interface Tournament {
 }
 
 export default function AdminTournamentsPage() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [tournaments, setTournaments] = useState<Tournament[]>([]);
     const [loading, setLoading] = useState(true);

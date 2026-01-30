@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useCallback } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface ConfirmDialog {
     open: boolean;
@@ -24,7 +25,7 @@ interface User {
 }
 
 export default function UserManagement() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const user = session?.user;
     const [searchTerm, setSearchTerm] = useState('');
     const [filterRole, setFilterRole] = useState<'all' | 'ADMIN' | 'ARTIST' | 'USER'>('all');
@@ -177,7 +178,7 @@ export default function UserManagement() {
         u.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (!user || !user.roles?.includes('ADMIN')) {
+    if (!user || !(user as any).roles?.includes('ADMIN')) {
         return (
             <main className="min-h-screen p-6 max-w-4xl mx-auto pt-32 text-center">
                 <h1 className="text-3xl font-bold">Admin Only</h1>
@@ -334,11 +335,11 @@ export default function UserManagement() {
                     </div>
                     <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
                         <p className="text-zinc-400 text-sm">Admins</p>
-                        <p className="text-4xl font-bold mt-2 text-blue-400">{users.filter((u) => u.roles?.includes('ADMIN')).length}</p>
+                        <p className="text-4xl font-bold mt-2 text-blue-400">{users.filter((u) => (u.roles as any)?.includes('ADMIN')).length}</p>
                     </div>
                     <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
                         <p className="text-zinc-400 text-sm">Artists</p>
-                        <p className="text-4xl font-bold mt-2 text-emerald-400">{users.filter((u) => u.roles?.includes('ARTIST')).length}</p>
+                        <p className="text-4xl font-bold mt-2 text-emerald-400">{users.filter((u) => (u.roles as any)?.includes('ARTIST')).length}</p>
                     </div>
                     <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
                         <p className="text-zinc-400 text-sm">Banned</p>

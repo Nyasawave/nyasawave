@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MOCK_PAYMENT_RESPONSES, PLATFORM_COMMISSION } from '@/lib/payments';
 import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 /**
  * SECURE PAYMENT INITIATION
@@ -12,7 +13,7 @@ import { getServerSession } from 'next-auth/next';
 export async function POST(req: NextRequest) {
     try {
         // 1. VALIDATE AUTHENTICATION
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
         if (!session?.user) {
             console.warn('[PAYMENT] Unauthenticated payment attempt');
             return NextResponse.json(

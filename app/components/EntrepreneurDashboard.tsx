@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import styles from "./EntrepreneurDashboard.module.css";
 
 /**
@@ -14,7 +15,7 @@ import styles from "./EntrepreneurDashboard.module.css";
  */
 
 export default function EntrepreneurDashboard() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const [products, setProducts] = useState<any[]>([]);
     const [revenue, setRevenue] = useState({
         total: 0,
@@ -115,12 +116,12 @@ export default function EntrepreneurDashboard() {
                         <div className={styles.chartContainer}>
                             <div className={styles.chart}>
                                 <div className={styles.barChart}>
-                                    <div className={styles.bar} style={{ height: "60%" }} />
-                                    <div className={styles.bar} style={{ height: "45%" }} />
-                                    <div className={styles.bar} style={{ height: "75%" }} />
-                                    <div className={styles.bar} style={{ height: "50%" }} />
-                                    <div className={styles.bar} style={{ height: "80%" }} />
-                                    <div className={styles.bar} style={{ height: "40%" }} />
+                                    <div className={`${styles.bar} ${styles.barHeight60}`} />
+                                    <div className={`${styles.bar} ${styles.barHeight45}`} />
+                                    <div className={`${styles.bar} ${styles.barHeight75}`} />
+                                    <div className={`${styles.bar} ${styles.barHeight50}`} />
+                                    <div className={`${styles.bar} ${styles.barHeight80}`} />
+                                    <div className={`${styles.bar} ${styles.barHeight40}`} />
                                 </div>
                                 <p className={styles.chartLabel}>Last 6 Days Sales</p>
                             </div>

@@ -1,49 +1,208 @@
 
 > nyasawave@0.1.0 build E:\nyasawave-projects\nyasawave
-> next build
+> prisma generate && next build
+
+Prisma schema loaded from prisma\schema.prisma.
+
+Ô£ö Generated Prisma Client (v7.2.0) to .\node_modules\.pnpm\@prisma+client@7.2.0_prisma_f75d495222e5a9a082c60aa675bb2498\node_modules\@prisma\client in 5.64s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
 
 Ôû▓ Next.js 16.1.1 (Turbopack)
 - Environments: .env.local
 
 ÔÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
   Creating an optimized production build ...
+Ô£ô Compiled successfully in 2.3min
+  Running TypeScript ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/162) ...
+  Generating static pages using 3 workers (40/162) 
+  Generating static pages using 3 workers (80/162) 
+  Generating static pages using 3 workers (121/162) 
+Ô£ô Generating static pages using 3 workers (162/162) in 24.5s
+  Finalizing page optimization ...
 
-> Build error occurred
-Error: Turbopack build failed with 2 errors:
-./app/subscribe/page.tsx:3:20
-Ecmascript file had an error
-  1 | import { useAuth } from "@/app/context/AuthContext";
-  2 | import Link from "next/link";
-> 3 | import { useState, useEffect, useCallback } from "react";
-    |                    ^^^^^^^^^
-  4 |
-  5 | interface Subscription {
-  6 |   tier: 'free' | 'premium';
+Route (app)
+Ôöî Ôùï /
+Ôö£ Ôùï /_not-found
+Ôö£ Ôùï /account/settings
+Ôö£ Ôùï /admin
+Ôö£ Ôùï /admin/artists
+Ôö£ Ôùï /admin/content
+Ôö£ Ôùï /admin/dashboard
+Ôö£ Ôùï /admin/entrepreneurs
+Ôö£ Ôùï /admin/marketers
+Ôö£ Ôùï /admin/moderation
+Ôö£ Ôùï /admin/payments
+Ôö£ Ôùï /admin/reports
+Ôö£ Ôùï /admin/roles
+Ôö£ Ôùï /admin/settings
+Ôö£ Ôùï /admin/tools
+Ôö£ Ôùï /admin/tournaments
+Ôö£ Ôùï /admin/users
+Ôö£ Ôùï /analytics
+Ôö£ ãÆ /api/admin
+Ôö£ ãÆ /api/admin/artists
+Ôö£ ãÆ /api/admin/artists/verify
+Ôö£ ãÆ /api/admin/audit
+Ôö£ ãÆ /api/admin/content
+Ôö£ ãÆ /api/admin/financial
+Ôö£ ãÆ /api/admin/impersonate
+Ôö£ ãÆ /api/admin/kyc
+Ôö£ ãÆ /api/admin/manual-payout
+Ôö£ ãÆ /api/admin/stats
+Ôö£ ãÆ /api/admin/tournaments
+Ôö£ ãÆ /api/admin/transactions
+Ôö£ ãÆ /api/admin/users
+Ôö£ ãÆ /api/admin/users/ban
+Ôö£ ãÆ /api/admin/users/role
+Ôö£ ãÆ /api/albums
+Ôö£ ãÆ /api/artist/ads
+Ôö£ ãÆ /api/artist/analytics
+Ôö£ ãÆ /api/artist/boost
+Ôö£ ãÆ /api/artist/earnings
+Ôö£ ãÆ /api/artist/kyc
+Ôö£ ãÆ /api/artist/releases
+Ôö£ ãÆ /api/artist/stats
+Ôö£ ãÆ /api/artist/tracks
+Ôö£ ãÆ /api/artist/withdraw
+Ôö£ ãÆ /api/artists
+Ôö£ ãÆ /api/auth/[...nextauth]
+Ôö£ ãÆ /api/auth/forgot
+Ôö£ ãÆ /api/auth/login
+Ôö£ ãÆ /api/auth/me
+Ôö£ ãÆ /api/auth/password-reset
+Ôö£ ãÆ /api/auth/register
+Ôö£ ãÆ /api/auth/register-artist
+Ôö£ ãÆ /api/auth/register/multi-step
+Ôö£ ãÆ /api/auth/subscribe
+Ôö£ ãÆ /api/auth/switch-persona
+Ôö£ ãÆ /api/auth/switch-role
+Ôö£ ãÆ /api/auth/verify-email
+Ôö£ ãÆ /api/business/ads
+Ôö£ ãÆ /api/business/register
+Ôö£ ãÆ /api/discover
+Ôö£ ãÆ /api/downloads/[id]
+Ôö£ ãÆ /api/entrepreneur/ads
+Ôö£ ãÆ /api/entrepreneur/businesses
+Ôö£ ãÆ /api/entrepreneur/payments
+Ôö£ ãÆ /api/entrepreneur/stats
+Ôö£ ãÆ /api/escrow
+Ôö£ ãÆ /api/escrow/[id]/dispute
+Ôö£ ãÆ /api/escrow/[id]/release
+Ôö£ ãÆ /api/listener/library
+Ôö£ ãÆ /api/listener/playlists
+Ôö£ ãÆ /api/listener/recent
+Ôö£ ãÆ /api/listener/stats
+Ôö£ ãÆ /api/marketer/artists
+Ôö£ ãÆ /api/marketer/campaigns
+Ôö£ ãÆ /api/marketer/earnings
+Ôö£ ãÆ /api/marketer/stats
+Ôö£ ãÆ /api/marketplace/messages
+Ôö£ ãÆ /api/marketplace/orders
+Ôö£ ãÆ /api/marketplace/orders/[id]
+Ôö£ ãÆ /api/marketplace/products
+Ôö£ ãÆ /api/marketplace/products/[id]
+Ôö£ ãÆ /api/orders
+Ôö£ ãÆ /api/payments/checkout
+Ôö£ ãÆ /api/payments/initiate
+Ôö£ ãÆ /api/payments/initiate-boost
+Ôö£ ãÆ /api/payments/intent
+Ôö£ ãÆ /api/payments/marketplace/webhook
+Ôö£ ãÆ /api/payments/payout
+Ôö£ ãÆ /api/payments/payouts
+Ôö£ ãÆ /api/payments/verify
+Ôö£ ãÆ /api/payments/webhook
+Ôö£ ãÆ /api/player/queue
+Ôö£ ãÆ /api/playlists
+Ôö£ ãÆ /api/playlists/[id]
+Ôö£ ãÆ /api/products
+Ôö£ ãÆ /api/security/fraud-detection
+Ôö£ ãÆ /api/security/kyc
+Ôö£ ãÆ /api/songs
+Ôö£ ãÆ /api/stream/log
+Ôö£ ãÆ /api/tournaments
+Ôö£ ãÆ /api/tournaments/[id]
+Ôö£ ãÆ /api/tournaments/[id]/voting
+Ôö£ ãÆ /api/tournaments/calculate-winners
+Ôö£ ãÆ /api/tracks/play
+Ôö£ ãÆ /api/tracks/upload
+Ôö£ ãÆ /api/user/settings
+Ôö£ ãÆ /api/user/theme
+Ôö£ ãÆ /api/wallet
+Ôö£ Ôùï /artist
+Ôö£ Ôùï /artist/ads
+Ôö£ Ôùï /artist/ads/history
+Ôö£ Ôùï /artist/analytics
+Ôö£ Ôùï /artist/checkout
+Ôö£ Ôùï /artist/dashboard
+Ôö£ Ôùï /artist/earnings
+Ôö£ Ôùï /artist/kyc
+Ôö£ Ôùï /artist/register
+Ôö£ Ôùï /artist/settings
+Ôö£ Ôùï /artist/signin
+Ôö£ Ôùï /artist/tracks
+Ôö£ Ôùï /artist/upload
+Ôö£ Ôùï /artists
+Ôö£ ãÆ /artists/[slug]
+Ôö£ Ôùï /business
+Ôö£ Ôùï /checkout
+Ôö£ Ôùï /checkout/success
+Ôö£ Ôùï /community-guidelines
+Ôö£ Ôùï /copyright
+Ôö£ Ôùï /discover
+Ôö£ Ôùï /entrepreneur
+Ôö£ Ôùï /entrepreneur/ads
+Ôö£ Ôùï /entrepreneur/businesses
+Ôö£ Ôùï /entrepreneur/dashboard
+Ôö£ Ôùï /entrepreneur/payments
+Ôö£ Ôùï /entrepreneur/settings
+Ôö£ Ôùï /forgot
+Ôö£ Ôùï /investors
+Ôö£ Ôùï /listener
+Ôö£ Ôùï /listener/dashboard
+Ôö£ Ôùï /listener/discover
+Ôö£ Ôùï /listener/library
+Ôö£ Ôùï /listener/profile
+Ôö£ Ôùï /listener/settings
+Ôö£ Ôùï /login
+Ôö£ Ôùï /marketer
+Ôö£ Ôùï /marketer/artists
+Ôö£ Ôùï /marketer/dashboard
+Ôö£ Ôùï /marketer/earnings
+Ôö£ Ôùï /marketer/settings
+Ôö£ Ôùï /marketplace
+Ôö£ ãÆ /marketplace/[id]
+Ôö£ ãÆ /marketplace/chat
+Ôö£ Ôùï /marketplace/products
+Ôö£ Ôùï /me
+Ôö£ Ôùï /notifications
+Ôö£ Ôùï /orders
+Ôö£ Ôùï /payment
+Ôö£ Ôùï /payment/checkout
+Ôö£ Ôùï /payment/success
+Ôö£ Ôùï /playlists
+Ôö£ Ôùï /pricing
+Ôö£ Ôùï /privacy
+Ôö£ Ôùï /refund
+Ôö£ Ôùï /register
+Ôö£ Ôùï /seller-agreement
+Ôö£ Ôùï /signin
+Ôö£ Ôùï /subscribe
+Ôö£ Ôùï /terms
+Ôö£ Ôùï /tournaments
+Ôö£ ãÆ /tournaments/[id]
+Ôö£ Ôùï /tournaments/create
+Ôö£ ãÆ /track/[id]
+Ôö£ Ôùï /unauthorized
+Ôöö Ôùï /upload
 
-You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
 
- Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+ãÆ Proxy (Middleware)
 
+Ôùï  (Static)   prerendered as static content
+ãÆ  (Dynamic)  server-rendered on demand
 
-
-
-./app/subscribe/page.tsx:3:10
-Ecmascript file had an error
-  1 | import { useAuth } from "@/app/context/AuthContext";
-  2 | import Link from "next/link";
-> 3 | import { useState, useEffect, useCallback } from "react";
-    |          ^^^^^^^^
-  4 |
-  5 | interface Subscription {
-  6 |   tier: 'free' | 'premium';
-
-You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-
- Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-
-
-
-
-    at <unknown> (./app/subscribe/page.tsx:3:20)
-    at <unknown> (./app/subscribe/page.tsx:3:10)
-ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.

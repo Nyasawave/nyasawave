@@ -4,9 +4,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import SubscriptionPlans from "@/app/components/SubscriptionPlans";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function SubscribePage() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
   const router = useRouter();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
 

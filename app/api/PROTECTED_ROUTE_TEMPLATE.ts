@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]/route";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -16,7 +17,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
     try {
         // 1. Get session (NextAuth validates JWT)
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
 
         // 2. Check authentication
         if (!session?.user) {
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         // 1. Get session
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
 
         // 2. Check authentication
         if (!session?.user) {

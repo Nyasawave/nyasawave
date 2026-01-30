@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface Content {
     id: string;
@@ -17,7 +18,7 @@ interface Content {
 }
 
 export default function AdminContentPage() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [content, setContent] = useState<Content[]>([]);
     const [loading, setLoading] = useState(true);

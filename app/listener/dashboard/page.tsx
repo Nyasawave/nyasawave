@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ListenerNav from '@/app/components/navigation/ListenerNav';
 import RoleContextSwitcher from '@/app/components/RoleContextSwitcher';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface ListenerStats {
     totalSongs: number;
@@ -14,7 +15,7 @@ interface ListenerStats {
 }
 
 export default function ListenerDashboard() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [stats, setStats] = useState<ListenerStats | null>(null);
 

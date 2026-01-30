@@ -5,12 +5,13 @@ import { usePathname } from 'next/navigation';
 
 const listenerLinks = [
     { href: '/discover', label: 'Discover', icon: '🔍' },
+    { href: '/marketplace', label: 'Marketplace', icon: '🛍️' },
     { href: '/listener/library', label: 'Library', icon: '📋' },
     { href: '/listener/profile', label: 'Profile', icon: '👤' },
     { href: '/listener/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-export default function ListenerNav() {
+export default function ListenerNav({ isMobile }: { isMobile?: boolean }) {
     const pathname = usePathname();
     const isActive = (href: string) => pathname === href || pathname.startsWith(href);
 

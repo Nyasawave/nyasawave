@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import Link from "next/link";
 import styles from "./AdminDashboard.module.css";
 
@@ -33,7 +34,7 @@ interface User {
 }
 
 export default function AdminDashboard() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const [stats, setStats] = useState<SystemStats | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
@@ -196,8 +197,8 @@ export default function AdminDashboard() {
                                         <button className={styles.viewBtn}>View</button>
                                         <button
                                             className={`${styles.banBtn} ${user.status === "banned"
-                                                    ? styles.unbanBtn
-                                                    : ""
+                                                ? styles.unbanBtn
+                                                : ""
                                                 }`}
                                         >
                                             {user.status === "banned" ? "Unban" : "Ban"}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useCallback } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface ConfirmDialog {
     open: boolean;
@@ -12,8 +13,8 @@ interface ConfirmDialog {
 }
 
 export default function ArtistsManagement() {
-    const { data: session } = useSession();
-    const user = session?.user;
+    const { data: session } = useSession() as { data: ExtendedSession | null };
+    const user = session?.user as any;
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState<'all' | 'verified' | 'pending'>('all');

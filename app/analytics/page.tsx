@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import styles from "./analytics.module.css";
+import type { ExtendedSession } from "@/app/types/auth";
 
 const generateMockStats = () => ({
   totalStreams: Math.floor(Math.random() * 1000000),
@@ -25,7 +26,7 @@ const generateChartData = () => [
 ];
 
 export default function AnalyticsPage() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
   const user = session?.user;
   const [timeframe, setTimeframe] = useState<"week" | "month" | "year">("month");
 

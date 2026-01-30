@@ -273,7 +273,7 @@ export function checkAccess(params: AccessCheckParams): AccessResult {
  */
 export function hasAnyAccess(
     user: Session["user"] | undefined,
-    actions: AccessCheckParams[]
+    actions: Omit<AccessCheckParams, "user">[]
 ): boolean {
     return actions.some(action => checkAccess({ user, ...action }).allowed);
 }
@@ -284,7 +284,7 @@ export function hasAnyAccess(
  */
 export function hasAllAccesses(
     user: Session["user"] | undefined,
-    actions: AccessCheckParams[]
+    actions: Omit<AccessCheckParams, "user">[]
 ): boolean {
     return actions.every(action => checkAccess({ user, ...action }).allowed);
 }

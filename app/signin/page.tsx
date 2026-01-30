@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function SignInPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,11 +18,12 @@ export default function SignInPage() {
   useEffect(() => {
     if (session?.user && !isRedirecting) {
       setIsRedirecting(true);
-      console.log('[SIGNIN] Session obtained, redirecting based on role:', session.user.roles);
+      const user = session.user;
+      console.log('[SIGNIN] Session obtained, redirecting based on role:', user.roles);
       // Redirect based on user role
-      if (session.user.roles?.includes('ADMIN')) {
+      if (user.roles?.includes('ADMIN')) {
         router.push('/admin');
-      } else if (session.user.roles?.includes('ARTIST')) {
+      } else if (user.roles?.includes('ARTIST')) {
         router.push('/artist/dashboard');
       } else {
         // USER role or default

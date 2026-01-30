@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 /**
  * GET /api/escrow - List all escrows (admin) or user's escrows
  */
 export async function GET(req: NextRequest) {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
 
         if (!session?.user?.email) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -27,11 +26,6 @@ export async function GET(req: NextRequest) {
         if (user.roles?.includes('ADMIN')) {
             // Admins see all escrows
             escrows = await prisma.escrow.findMany({
-                include: {
-                    order: {
-                        include: { buyer: true },
-                    },
-                },
                 orderBy: { createdAt: 'desc' },
             });
         } else {
@@ -39,11 +33,6 @@ export async function GET(req: NextRequest) {
             escrows = await prisma.escrow.findMany({
                 where: {
                     OR: [{ buyerId: user.id }, { sellerId: user.id }],
-                },
-                include: {
-                    order: {
-                        include: { buyer: true },
-                    },
                 },
                 orderBy: { createdAt: 'desc' },
             });
@@ -65,7 +54,7 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
 
         if (!session?.user?.email) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

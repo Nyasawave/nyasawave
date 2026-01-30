@@ -1,9 +1,33 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
-import type { JWT } from "next-auth/jwt";
+
+declare module "next-auth/jwt" {
+    interface JWT {
+        id: string;
+        roles: string[];
+        activePersona: string;
+        premiumListener: boolean;
+        verified: boolean;
+    }
+}
+
+declare module "next-auth" {
+    interface User {
+        id: string;
+        name: string;
+        email: string;
+        image?: string;
+        roles: string[];
+        activePersona: string;
+        premiumListener: boolean;
+        verified: boolean;
+    }
+}
 
 const DB = path.join(process.cwd(), "data", "users.json");
 

@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useState, useRef } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function ArtistUpload() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
   const user = session?.user;
   const audioFileRef = useRef<HTMLInputElement>(null);
   const coverArtRef = useRef<HTMLInputElement>(null);

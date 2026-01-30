@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import type { ExtendedSession } from '@/app/types/auth';
 import { useState, useEffect } from 'react';
 import {
     EarningsChart,
@@ -13,10 +14,12 @@ import {
 import { mockEarningsData } from '../../../data/mock-earnings';
 
 export default function ArtistAnalytics() {
-    const { user } = useAuth();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [data, setData] = useState(mockEarningsData);
     const [timeRange, setTimeRange] = useState<'month' | 'quarter' | 'year'>('month');
+
+    const user = session?.user as any;
 
     if (!user || !user.roles?.includes('ARTIST')) {
         return (

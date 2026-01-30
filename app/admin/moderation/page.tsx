@@ -3,13 +3,14 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function ModerationPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
 
     useEffect(() => {
-        if (session && !session.user.roles?.includes('ADMIN')) {
+        if (session && !(session.user as any)?.roles?.includes('ADMIN')) {
             router.push('/unauthorized');
         }
     }, [session, router]);

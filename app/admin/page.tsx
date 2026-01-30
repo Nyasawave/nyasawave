@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 export default function AdminDashboard() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const user = session?.user;
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +38,7 @@ export default function AdminDashboard() {
     }
 
     // Show error if not admin
-    if (!session?.user || !session.user.roles?.includes('ADMIN')) {
+    if (!session?.user || !(session.user as any)?.roles?.includes('ADMIN')) {
         return (
             <main className="min-h-screen p-6 max-w-4xl mx-auto pt-32 text-center">
                 <h1 className="text-3xl font-bold">Admin Only</h1>
@@ -113,7 +114,7 @@ export default function AdminDashboard() {
                         <p className="text-zinc-400 mt-2">Platform management & moderation center</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm text-zinc-400">Welcome back, {user.name}</p>
+                        <p className="text-sm text-zinc-400">Welcome back, {(user as any)?.name}</p>
                         <button
                             onClick={() => {
                                 // TODO: Implement logout

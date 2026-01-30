@@ -4,15 +4,16 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import type { ExtendedSession } from "@/app/types/auth";
 
 export default function MarketerPage() {
-    const { data: session } = useSession();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
     const router = useRouter();
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (session && !session.user.roles?.includes('MARKETER')) {
+        if (session && !session.user?.roles?.includes('MARKETER')) {
             router.push('/unauthorized');
         }
     }, [session, router]);

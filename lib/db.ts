@@ -1,7 +1,8 @@
 // Mock Prisma client for development without database
 // In production, this should use actual Prisma configuration
+// NOTE: Use lib/prisma.ts for actual database operations
 
-export const prisma = {
+const mockPrisma = {
   user: {
     findMany: async () => [],
     findUnique: async () => null,
@@ -35,4 +36,4 @@ export const prisma = {
   },
 } as any;
 
-export { prisma };
+export { mockPrisma };

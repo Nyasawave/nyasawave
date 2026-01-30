@@ -1,13 +1,14 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import SongsGrid from "./SongsGrid";
 import ArtistCard from "./ArtistCard";
 import AlbumCard from "./AlbumCard";
 import NewsCard from "./NewsCard";
 
 export default function DiscoverPrivate({ artists, songs, albums, news }: any) {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
   const user = session?.user;
 
   if (!user) {
@@ -51,7 +52,7 @@ export default function DiscoverPrivate({ artists, songs, albums, news }: any) {
           <div className="p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800">
             <p className="text-zinc-300">Albums are available for subscribed users.</p>
             <div className="mt-3">
-              <button onClick={async () => await toggleSubscribe()} className="btn-cta bg-emerald-400 text-black">Subscribe (demo)</button>
+              <a href="/subscribe" className="btn-cta bg-emerald-400 text-black">Subscribe</a>
             </div>
           </div>
         )}

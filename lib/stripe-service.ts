@@ -142,7 +142,9 @@ export async function createPaymentIntent(params: CreatePaymentIntentParams) {
  */
 export async function cancelSubscription(subscriptionId: string) {
     try {
-        const subscription = await stripe.subscriptions.del(subscriptionId);
+        const subscription = await stripe.subscriptions.update(subscriptionId, {
+            cancel_at_period_end: true,
+        });
         return subscription;
     } catch (error) {
         console.error("[STRIPE] Error canceling subscription:", error);

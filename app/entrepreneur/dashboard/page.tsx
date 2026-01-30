@@ -3,6 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 import EntrepreneurNav from '@/app/components/navigation/EntrepreneurNav';
 import RoleContextSwitcher from '@/app/components/RoleContextSwitcher';
 
@@ -14,7 +15,7 @@ interface EntrepreneurStats {
 }
 
 export default function EntrepreneurDashboard() {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
     const router = useRouter();
     const [stats, setStats] = useState<EntrepreneurStats | null>(null);
 

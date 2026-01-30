@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '../../context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, Suspense } from 'react';
 import { BOOST_TYPES } from '../../../data/boost-pricing';
+import type { ExtendedSession } from '@/app/types/auth';
 
 function CheckoutContent() {
-    const { user } = useAuth();
+    const { data: session } = useSession() as { data: ExtendedSession | null };
+    const user = session?.user;
     const router = useRouter();
     const searchParams = useSearchParams();
     const songId = searchParams.get('songId');

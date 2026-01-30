@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from '@/app/context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
+import type { ExtendedSession } from '@/app/types/auth';
 
 interface Withdrawal {
   id: string;
@@ -29,7 +30,8 @@ interface Earnings {
 }
 
 export default function ArtistEarnings() {
-  const { user, token } = useAuth();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
+  const user = session?.user;
   const [earnings, setEarnings] = useState<Earnings | null>(null);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
   const [availableBalance, setAvailableBalance] = useState(0);
@@ -41,17 +43,17 @@ export default function ArtistEarnings() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (user && user.roles?.includes('ARTIST') && token) {
+    if (user && user.roles?.includes('ARTIST')) {
       fetchEarnings();
     }
-  }, [user, token]);
+  }, [user]);
 
   const fetchEarnings = async () => {
     try {
       // Fetch earnings
       const earningsRes = await fetch('/api/artist/earnings', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
       if (earningsRes.ok) {
@@ -63,7 +65,7 @@ export default function ArtistEarnings() {
       // Fetch withdrawals
       const withdrawRes = await fetch('/api/artist/withdraw', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
       if (withdrawRes.ok) {
@@ -99,7 +101,6 @@ export default function ArtistEarnings() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           amount: parseFloat(withdrawalAmount),

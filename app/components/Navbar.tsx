@@ -6,11 +6,12 @@ import Logo from "./Logo";
 import GlobalSearch from "./GlobalSearch";
 import PersonaSwitcher from "./PersonaSwitcher";
 import { useSession, signOut } from "next-auth/react";
+import type { ExtendedSession } from "@/app/types/auth";
 import { isArtist, isAdmin } from "@/app/utils/auth";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
   const user = session?.user as any;
   const userIsArtist = isArtist(user && user.roles ? user : undefined);
   const userIsAdmin = isAdmin(user && user.roles ? user : undefined);

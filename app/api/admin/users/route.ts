@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
-import { prisma } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 
 /**
  * GET /api/admin/users
@@ -30,12 +30,12 @@ export async function GET(req: NextRequest) {
 
         // Use Prisma for real data
         const where: any = {};
-        if (role !== 'all') where.role = role;
+        if (role !== 'all') where.roles = { has: role };
 
         const [users, total] = await Promise.all([
             prisma.user.findMany({
                 where,
-                select: { id: true, email: true, name: true, role: true, createdAt: true },
+                select: { id: true, email: true, name: true, roles: true, createdAt: true },
                 skip: (page - 1) * limit,
                 take: limit,
                 orderBy: { createdAt: 'desc' },
