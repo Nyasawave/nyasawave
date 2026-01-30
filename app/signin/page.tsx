@@ -19,14 +19,24 @@ export default function SignInPage() {
     if (session?.user && !isRedirecting) {
       setIsRedirecting(true);
       const user = session.user;
-      console.log('[SIGNIN] Session obtained, redirecting based on role:', user.roles);
-      // Redirect based on user role
+      console.log('[SIGNIN] Session obtained, user roles:', user.roles);
+
+      // Redirect based on user role for role-specific experience
       if (user.roles?.includes('ADMIN')) {
+        console.log('[SIGNIN] Redirecting ADMIN to /admin');
         router.push('/admin');
       } else if (user.roles?.includes('ARTIST')) {
+        console.log('[SIGNIN] Redirecting ARTIST to /artist/dashboard');
         router.push('/artist/dashboard');
+      } else if (user.roles?.includes('ENTREPRENEUR')) {
+        console.log('[SIGNIN] Redirecting ENTREPRENEUR to /entrepreneur/dashboard');
+        router.push('/entrepreneur/dashboard');
+      } else if (user.roles?.includes('MARKETER')) {
+        console.log('[SIGNIN] Redirecting MARKETER to /marketer/dashboard');
+        router.push('/marketer/dashboard');
       } else {
-        // USER role or default
+        // Default to home for LISTENER or other roles
+        console.log('[SIGNIN] Redirecting to home (LISTENER or default)');
         router.push('/');
       }
     }
@@ -52,14 +62,10 @@ export default function SignInPage() {
         return setError(result.error || 'Unable to sign in');
       }
 
-      console.log('[SIGNIN] Login successful, redirecting...');
-      // Force immediate redirect instead of waiting for session update
-      // Session will update in the background
-      if (result?.ok) {
-        // Redirect immediately based on common role (default to home)
-        // The session context will eventually populate
-        router.push('/');
-      }
+      console.log('[SIGNIN] Login successful, waiting for session update...');
+      // Don't redirect immediately - let useEffect handle it
+      // The useEffect will redirect based on user roles once session is populated
+      // This ensures the header updates with the correct role first
     } catch (err) {
       console.error('[SIGNIN] Exception during sign in:', err);
       setError('An error occurred during sign in');
