@@ -29,16 +29,39 @@ declare module "next-auth" {
     }
 }
 
-const DB = path.join(process.cwd(), "data", "users.json");
+// Dynamically resolve data path for both local and Vercel environments
+function getDBPath() {
+    const possiblePaths = [
+        path.join(process.cwd(), "data", "users.json"),
+        path.join(process.cwd(), "nyasawave", "data", "users.json"),
+    ];
 
-// CRITICAL: Only this email can have ADMIN role
-const ADMIN_EMAIL = 'trapkost2020@mail.com';
+    for (const filePath of possiblePaths) {
+        if (fs.existsSync(filePath)) {
+            console.log("[NEXTAUTH] Found users.json at:", filePath);
+            return filePath;
+        }
+    }
+
+    console.warn("[NEXTAUTH] WARNING: users.json not found. Cwd:", process.cwd());
+    return possiblePaths[0];
+}
+
+const DB = getDBPath();
+
+// CRITICAL: Only this email can have ADMIN role (fixed from @mail.com)
+const ADMIN_EMAIL = 'trapkost2020@gmail.com';
 
 function readUsers() {
     try {
+        console.log("[NEXTAUTH] Reading from:", DB);
         if (fs.existsSync(DB)) {
-            return JSON.parse(fs.readFileSync(DB, "utf-8")) || [];
+            const data = fs.readFileSync(DB, "utf-8");
+            const users = JSON.parse(data);
+            console.log("[NEXTAUTH] Loaded", users.length, "users");
+            return users || [];
         }
+        console.error("[NEXTAUTH] File not found:", DB);
         return [];
     } catch (e) {
         console.error("[NEXTAUTH] Error reading users:", e);

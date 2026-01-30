@@ -4,7 +4,20 @@ import path from 'path';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '@/lib/auth';
 
-const DB = path.join(process.cwd(), 'data', 'users.json');
+const DB_PATHS = [
+  path.join(process.cwd(), 'data', 'users.json'),
+  path.join(process.cwd(), 'nyasawave', 'data', 'users.json'),
+];
+
+function getDBPath() {
+  for (const p of DB_PATHS) {
+    if (fs.existsSync(p)) return p;
+  }
+  console.warn('[LOGIN] users.json not found in any path, using first:', DB_PATHS[0]);
+  return DB_PATHS[0];
+}
+
+const DB = getDBPath();
 
 function readUsers() {
   try {
