@@ -48,16 +48,21 @@ export default function SignInPage() {
 
       if (result?.error) {
         console.error('[SIGNIN] Login failed:', result.error);
+        setIsSigningIn(false);
         return setError(result.error || 'Unable to sign in');
       }
 
-      console.log('[SIGNIN] Login successful, waiting for session...');
-      // signIn with redirect: false doesn't automatically update session
-      // So we need to let the redirect logic in useEffect handle it
+      console.log('[SIGNIN] Login successful, redirecting...');
+      // Force immediate redirect instead of waiting for session update
+      // Session will update in the background
+      if (result?.ok) {
+        // Redirect immediately based on common role (default to home)
+        // The session context will eventually populate
+        router.push('/');
+      }
     } catch (err) {
       console.error('[SIGNIN] Exception during sign in:', err);
       setError('An error occurred during sign in');
-    } finally {
       setIsSigningIn(false);
     }
   };
