@@ -5,6 +5,7 @@ import type { JWT } from "next-auth/jwt";
 import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
+import { EMERGENCY_TEST_USERS, verifyPassword } from "@/lib/emergency-auth";
 
 declare module "next-auth/jwt" {
     interface JWT {
@@ -93,11 +94,37 @@ export const authOptions = {
 
                     console.log("[NEXTAUTH] Authorize attempt:", credentials.email);
 
+                    // Try to load from data/users.json first
                     const users = readUsers();
-                    const user = users.find((u: any) => u.email === credentials.email);
+                    let user = users.find((u: any) => u.email === credentials.email);
 
+                    // Fallback to emergency users if not found in JSON file
                     if (!user) {
-                        console.log("[NEXTAUTH] User not found:", credentials.email);
+                        console.log("[NEXTAUTH] User not in data/users.json, checking emergency users");
+                        const emergencyUser = EMERGENCY_TEST_USERS[credentials.email];
+                        if (emergencyUser) {
+                            console.log("[NEXTAUTH] Found in emergency users:", credentials.email);
+                            // Verify password against emergency user
+                            const passwordMatch = await verifyPassword(
+                                credentials.password,
+                                emergencyUser.passwordHash
+                            );
+                            if (!passwordMatch) {
+                                console.log("[NEXTAUTH] Emergency user password mismatch");
+                                return null;
+                            }
+                            // Return emergency user formatted for NextAuth
+                            return {
+                                id: `emergency_${credentials.email}`,
+                                email: emergencyUser.email,
+                                name: credentials.email.split('@')[0],
+                                roles: emergencyUser.roles,
+                                activePersona: emergencyUser.activePersona,
+                                premiumListener: true,
+                                verified: true,
+                            };
+                        }
+                        console.log("[NEXTAUTH] User not found in data or emergency users:", credentials.email);
                         return null;
                     }
 
