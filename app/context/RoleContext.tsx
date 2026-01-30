@@ -48,6 +48,8 @@ export function RoleContextProvider({
         setError(null);
 
         try {
+            console.log(`[RoleContext] Switching role to ${newRole}`);
+
             // Call backend to switch role
             const response = await fetch('/api/auth/switch-role', {
                 method: 'POST',
@@ -56,28 +58,28 @@ export function RoleContextProvider({
             });
 
             if (!response.ok) {
-                throw new Error('Failed to switch role');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to switch role');
             }
 
             const data = await response.json();
+            console.log(`[RoleContext] ✓ Role switched successfully:`, data);
 
-            // Update active role
+            // Update active role locally
             setActiveRole(newRole);
             localStorage.setItem('activeRole', newRole);
 
-            // Optional: Redirect based on new role
-            const roleRoutes: Record<UserRole, string> = {
-                ADMIN: '/admin',
-                ARTIST: '/artist',
-                LISTENER: '/discover',
-                ENTREPRENEUR: '/marketplace',
-                MARKETER: '/marketer',
-            };
-
-            // Could redirect here if desired
-            // window.location.href = roleRoutes[newRole];
+            // CRITICAL: Reload page to force JWT token refresh
+            // This triggers NextAuth to re-evaluate the session with the new role from DB
+            // Without this, the JWT token still has the old role
+            if (typeof window !== 'undefined') {
+                console.log(`[RoleContext] Reloading page to refresh JWT token...`);
+                window.location.href = '/';
+            }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Unknown error');
+            const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+            console.error(`[RoleContext] ✗ Role switch failed:`, errorMsg);
+            setError(errorMsg);
         } finally {
             setIsLoading(false);
         }

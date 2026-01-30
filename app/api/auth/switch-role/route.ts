@@ -92,8 +92,10 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.log(`[AUTH] Role switched for ${session.user?.email} to ${role}`);
+        console.log(`[SWITCH-ROLE] ✓ Role switched for ${session.user?.email} to ${role}`);
 
+        // CRITICAL: Return updated user object with new role
+        // This allows the client to update session context
         return NextResponse.json({
             success: true,
             message: `Switched to ${role} role`,
@@ -107,6 +109,11 @@ export async function POST(request: NextRequest) {
                 premiumListener: user.premiumListener,
                 verified: user.verified,
             },
+        }, {
+            headers: {
+                // This allows the browser to refresh the session automatically
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+            }
         });
     } catch (error) {
         console.error("[AUTH] Switch role error:", error);
