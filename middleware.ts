@@ -78,6 +78,11 @@ async function getSessionToken(request: NextRequest) {
             return null;
         }
         const token = await getToken({ req: request, secret });
+        if (token) {
+            console.log('[MIDDLEWARE] Token found - roles:', token.roles, 'email:', token.email);
+        } else {
+            console.log('[MIDDLEWARE] No token found in request');
+        }
         return token;
     } catch (error) {
         console.error('[MIDDLEWARE] Token verification failed:', error);
@@ -109,25 +114,33 @@ function getRequiredRoles(pathname: string): string[] | null {
 export async function middleware(req: NextRequest) {
     const pathname = req.nextUrl.pathname;
 
+    console.log(`[MIDDLEWARE] Processing: ${pathname}`);
+
     // Auth pages never redirect
     if (shouldNeverRedirect(pathname)) {
+        console.log(`[MIDDLEWARE] Auth page - allowing without redirect: ${pathname}`);
         return NextResponse.next();
     }
 
     // Public routes need no auth
     if (isPublicRoute(pathname)) {
+        console.log(`[MIDDLEWARE] Public route - no auth required: ${pathname}`);
         return NextResponse.next();
     }
 
     // Check role-based routes
     const requiredRoles = getRequiredRoles(pathname);
     if (!requiredRoles) {
+        console.log(`[MIDDLEWARE] No role requirement found for ${pathname} - allowing`);
         return NextResponse.next();
     }
+
+    console.log(`[MIDDLEWARE] Protected route detected - required roles: ${requiredRoles.join(',')}`);
 
     // Get session token
     const token = await getSessionToken(req);
     if (!token) {
+        console.log(`[MIDDLEWARE] No token found - redirecting to signin from ${pathname}`);
         const signinUrl = new URL('/signin', req.url);
         signinUrl.searchParams.set('callbackUrl', pathname);
         return NextResponse.redirect(signinUrl);
@@ -143,14 +156,16 @@ export async function middleware(req: NextRequest) {
 
     // Check if user has required role
     const userRoles = (token.roles as string[]) || [];
+    console.log(`[MIDDLEWARE] User roles: ${userRoles.join(',')} | Email: ${token.email}`);
+
     const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
 
     if (!hasRequiredRole) {
-        console.warn(`[MIDDLEWARE] Access denied - ${token.email} lacks required roles for ${pathname}`);
+        console.warn(`[MIDDLEWARE] Access denied - ${token.email} lacks required roles for ${pathname}. Has: ${userRoles.join(',')}, needs: ${requiredRoles.join(',')}`);
         return NextResponse.redirect(new URL('/', req.url));
     }
 
-    console.log(`[MIDDLEWARE] Access granted - ${token.email} (${userRoles.join(',')}) -> ${pathname}`);
+    console.log(`[MIDDLEWARE] ✓ Access granted - ${token.email} (${userRoles.join(',')}) -> ${pathname}`);
     return NextResponse.next();
 }
 

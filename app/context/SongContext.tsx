@@ -22,13 +22,19 @@ export function SongProvider({ children }: { children: React.ReactNode }) {
     const fetchSongs = async () => {
       try {
         setLoading(true);
+        console.log('[SongContext] Fetching songs from /api/songs');
         const res = await fetch("/api/songs");
-        if (!res.ok) throw new Error("Failed to fetch songs");
+        if (!res.ok) {
+          throw new Error(`Failed to fetch songs: ${res.status} ${res.statusText}`);
+        }
         const data = await res.json();
-        setSongs(data);
+        console.log('[SongContext] Fetched', data.length || 0, 'songs');
+        setSongs(Array.isArray(data) ? data : []);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
+        const errorMsg = err instanceof Error ? err.message : "Unknown error";
+        console.error('[SongContext] Error fetching songs:', errorMsg);
+        setError(errorMsg);
         setSongs([]);
       } finally {
         setLoading(false);

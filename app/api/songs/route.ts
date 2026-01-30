@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { songs } from '@/data/songs';
 
 export async function GET() {
+  console.log('[API/songs] GET request - returning', songs.length, 'songs');
   return NextResponse.json(songs);
 }
 
