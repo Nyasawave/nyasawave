@@ -1,7 +1,8 @@
-// Mock Prisma client for development without database
-// In production, this should use actual Prisma configuration
-// NOTE: Use lib/prisma.ts for actual database operations
+// Re-export Prisma client from lib/prisma.ts
+// This is the single source of truth for database access
+export { prisma } from './prisma';
 
+// Fallback mock for development/testing
 const mockPrisma = {
   user: {
     findMany: async () => [],
