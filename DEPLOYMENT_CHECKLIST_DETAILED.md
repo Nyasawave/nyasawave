@@ -1,4 +1,5 @@
 # 🚀 NYASAWAVE PRODUCTION DEPLOYMENT CHECKLIST
+
 ## Supabase + Vercel + Domain Setup
 
 **Last Updated:** February 3, 2026  
@@ -12,6 +13,7 @@
 Before deploying, run these local tests:
 
 ### 1. Build Test
+
 ```bash
 cd e:\nyasawave-projects\nyasawave
 npm run build
@@ -19,6 +21,7 @@ npm run build
 ```
 
 ### 2. Dev Server Test
+
 ```bash
 npm run dev
 # Visit http://localhost:3000
@@ -28,6 +31,7 @@ npm run dev
 ```
 
 ### 3. Role Test
+
 ```bash
 # Login as trapkost2020@mail.com
 # Click role switcher
@@ -37,6 +41,7 @@ npm run dev
 ```
 
 ### 4. API Test
+
 ```bash
 # Open browser console
 # Go to http://localhost:3000/api/songs
@@ -50,7 +55,7 @@ npm run dev
 
 ### 1.1 Create Supabase Project
 
-1. Go to **https://supabase.com**
+1. Go to **<https://supabase.com>**
 2. Sign in / Sign up
 3. Click **"New project"**
 4. Configure:
@@ -64,18 +69,22 @@ npm run dev
 ### 1.2 Get Database URL
 
 In Supabase dashboard:
+
 1. Go to **Settings → Database**
 2. Find **Connection string** section
 3. Select **"URI"** option (not "psql")
 4. Copy the string that looks like:
+
    ```
    postgresql://postgres:PASSWORD@host:5432/postgres
    ```
+
 5. **Keep this secret** — it's your DATABASE_URL
 
 ### 1.3 Configure Prisma Connection
 
 In your project, create/update `.env.production.local`:
+
 ```env
 # Database
 DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@db.RANDOM.supabase.co:5432/postgres"
@@ -97,6 +106,7 @@ NEXT_PUBLIC_ADMIN_EMAIL="trapkost2020@mail.com"
 ### 1.4 Run Prisma Migrations
 
 **Option A: Using Prisma Migrate (Recommended)**
+
 ```bash
 # Generate Prisma Client
 npx prisma generate
@@ -110,6 +120,7 @@ npx prisma db seed
 ```
 
 **Option B: If prisma migrate fails**
+
 ```bash
 # Fall back to push (warning: may lose data)
 npx prisma db push --force-reset
@@ -121,6 +132,7 @@ npx prisma db seed
 ### 1.5 Seed Sample Data
 
 Create `prisma/seed.ts`:
+
 ```typescript
 import { PrismaClient } from '@prisma/client';
 import { songs } from '../data/songs';
@@ -164,6 +176,7 @@ main()
 ```
 
 Then run:
+
 ```bash
 npx prisma db seed
 ```
@@ -184,7 +197,7 @@ npx prisma studio
 
 ### 2.1 Connect GitHub Repository
 
-1. Go to **https://vercel.com**
+1. Go to **<https://vercel.com>**
 2. Sign in with GitHub
 3. Click **"Add New → Project"**
 4. Select your **nyasawave** repository
@@ -195,6 +208,7 @@ npx prisma studio
 In Vercel project settings → **Environment Variables**:
 
 **Add Production Variables:**
+
 ```
 DATABASE_URL = (from Supabase)
 NEXTAUTH_URL = https://nyasawave.com
@@ -208,6 +222,7 @@ NODE_ENV = production
 ```
 
 **For Preview (Development):**
+
 ```
 DATABASE_URL = (same Supabase, or separate dev DB)
 NEXTAUTH_URL = https://YOUR_PREVIEW_URL.vercel.app
@@ -217,6 +232,7 @@ NEXTAUTH_SECRET = (same as production)
 ### 2.3 Configure Build Settings
 
 In project settings → **Build & Development Settings**:
+
 - **Framework:** Next.js (should auto-detect)
 - **Build Command:** `npm run build` or use default
 - **Output Directory:** `.next` (default)
@@ -236,10 +252,12 @@ In project settings → **Build & Development Settings**:
 ### 2.5 Test Production Deployment
 
 If preview passes, deploy to production:
+
 1. Click **"Promote to Production"** on preview
 2. Or wait for main branch to auto-deploy
 3. Visit `https://YOUR_PREVIEW_URL.vercel.app`
 4. Run smoke tests:
+
    ```
    [ ] Home page loads
    [ ] /discover shows songs
@@ -256,6 +274,7 @@ If preview passes, deploy to production:
 ### 3.1 Buy Domain (if needed)
 
 Options:
+
 - **Namecheap** (cheap, reliable)
 - **Google Domains** (integrated)
 - **Vercel Domains** (directly through Vercel)
@@ -285,6 +304,7 @@ If you bought domain elsewhere (Namecheap, Google):
 Vercel automatically provisions SSL certificate. Just wait 24 hrs.
 
 Verify:
+
 1. Visit `https://nyasawave.com`
 2. Check browser shows 🔒 (secure)
 3. No mixed content warnings
@@ -296,18 +316,21 @@ Verify:
 For transactional emails (password reset, verification):
 
 ### Option A: Using Supabase's Built-in Email
+
 1. In Supabase → **Settings → Email Templates**
 2. Configure sender email (Supabase provides one)
 3. Customize email templates
 4. Enable in your code
 
 ### Option B: Using SendGrid/Mailgun (Better)
+
 1. Sign up at **SendGrid.com** or **Mailgun.com**
 2. Get API key
 3. Add to Vercel env vars: `SENDGRID_API_KEY=...`
 4. Update code to use SendGrid SDK
 
-### Example Email Code:
+### Example Email Code
+
 ```typescript
 import nodemailer from 'nodemailer';
 
@@ -340,6 +363,7 @@ await transporter.sendMail({
    - Merchant Code
    - Merchant Number
 4. Add to Vercel env vars:
+
    ```
    AIRTEL_API_KEY=...
    AIRTEL_MERCHANT_CODE=...
@@ -354,6 +378,7 @@ await transporter.sendMail({
    - Merchant Code
    - Merchant Number
 4. Add to Vercel env vars:
+
    ```
    TNM_API_KEY=...
    TNM_MERCHANT_CODE=...
@@ -380,6 +405,7 @@ const response = await fetch('/api/payments/initiate', {
 ### 6.1 Add Security Headers
 
 In `next.config.ts`:
+
 ```typescript
 const headers = [
   {
@@ -417,6 +443,7 @@ export default {
 Install: `npm install express-rate-limit`
 
 Protect auth routes:
+
 ```typescript
 import rateLimit from 'express-rate-limit';
 
@@ -436,6 +463,7 @@ export async function POST(req: Request) {
 ### 6.3 Validate All Inputs
 
 Use **Zod** (already probably installed):
+
 ```typescript
 import { z } from 'zod';
 
@@ -452,6 +480,7 @@ const validated = PaymentSchema.parse(await req.json());
 ### 6.4 Enable Audit Logging
 
 Every admin action should be logged:
+
 ```typescript
 await prisma.auditLog.create({
   data: {
@@ -483,6 +512,7 @@ await prisma.auditLog.create({
 3. Get token
 4. Install: `npm install mixpanel-browser`
 5. Track events:
+
    ```typescript
    import mixpanel from 'mixpanel-browser';
    
@@ -496,6 +526,7 @@ await prisma.auditLog.create({
 ### 7.3 Database Backups (Supabase)
 
 Supabase auto-backups daily. To restore:
+
 1. Go to **Supabase → Settings → Backups**
 2. Click **"Restore"** on any backup
 3. Choose target database
@@ -508,6 +539,7 @@ Supabase auto-backups daily. To restore:
 Before telling users it's live:
 
 **Functionality**
+
 - [ ] Home page loads in < 3 seconds
 - [ ] Songs load on /discover (>100 tracks)
 - [ ] User can register
@@ -524,12 +556,14 @@ Before telling users it's live:
 - [ ] Role switching works
 
 **Performance**
+
 - [ ] Lighthouse score > 80 (audit at PageSpeed)
 - [ ] First Contentful Paint < 2 seconds
 - [ ] Largest Contentful Paint < 3 seconds
 - [ ] Cumulative Layout Shift < 0.1
 
 **Security**
+
 - [ ] HTTPS everywhere
 - [ ] No mixed content
 - [ ] HTTPS enforced (redirect HTTP → HTTPS)
@@ -539,6 +573,7 @@ Before telling users it's live:
 - [ ] Admin email protected
 
 **Data**
+
 - [ ] Supabase connection working
 - [ ] Migrations ran successfully
 - [ ] Sample data seeded
@@ -547,6 +582,7 @@ Before telling users it's live:
 - [ ] Transactions logged
 
 **Monitoring**
+
 - [ ] Error tracking (Sentry) receiving logs
 - [ ] Analytics (Mixpanel) tracking events
 - [ ] Database backups scheduled
@@ -557,7 +593,9 @@ Before telling users it's live:
 ## 🆘 TROUBLESHOOTING
 
 ### Build Fails on Vercel
+
 **Check:**
+
 ```bash
 # Local build works?
 npm run build
@@ -573,12 +611,15 @@ npm run build
 ```
 
 ### 502 Bad Gateway After Deploy
+
 **Causes:**
+
 - Database not accessible (check DATABASE_URL)
 - Prisma Client not generated (run `npx prisma generate`)
 - API route error (check Vercel logs)
 
 **Fix:**
+
 ```bash
 # Regenerate Prisma
 npx prisma generate
@@ -588,7 +629,9 @@ git push # auto-deploys to Vercel
 ```
 
 ### Discover Shows 0 Tracks
+
 **Check:**
+
 1. Is /api/songs endpoint responding?
    - Visit: `https://nyasawave.com/api/songs`
    - Should return JSON array
@@ -600,7 +643,9 @@ git push # auto-deploys to Vercel
    - Check Track table has rows
 
 ### Users Can't Login
+
 **Check:**
+
 1. Is NEXTAUTH_URL correct?
    - Should be `https://nyasawave.com` (no /api/auth)
 2. Is NEXTAUTH_SECRET set?
@@ -609,7 +654,9 @@ git push # auto-deploys to Vercel
    - `npx prisma studio` → User table
 
 ### Payment Not Working
+
 **Check:**
+
 1. Are API keys set in Vercel env?
 2. Is payment API endpoint responding?
    - `POST /api/payments/initiate`
@@ -630,13 +677,13 @@ Once live:
 
 ---
 
-## 🎉 SUCCESS!
+## 🎉 SUCCESS
 
 Once all checks pass, you're live. Announce to:
+
 - Social media
 - Email list
 - Artist community
 - Press/blogs
 
 **Congratulations — NyasaWave is live!**
-
